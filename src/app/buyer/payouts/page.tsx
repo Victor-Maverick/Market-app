@@ -30,6 +30,18 @@ interface RefundResponse {
     processedAt: string;
 }
 
+interface PayoutResponse {
+    id: number;
+    paidAmount: number;
+    paidAt: string;
+    requestedAt: string;
+    vendorName: string;
+    isPaid: boolean;
+    accountNumber: string;
+    bankName: string;
+    bankCode: string;
+}
+
 interface Bank {
     name: string;
     code: string;
@@ -45,6 +57,7 @@ const Payouts = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const [refunds, setRefunds] = useState<RefundResponse[]>([]);
+    const [payouts, setPayouts] = useState<PayoutResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [payoutAmount, setPayoutAmount] = useState(0);
     const [isPayoutModalOpen, setIsPayoutModalOpen] = useState(false);
@@ -63,13 +76,15 @@ const Payouts = () => {
                     return;
                 }
 
-                const [refundsResponse, payoutResponse] = await Promise.all([
+                const [refundsResponse, payoutResponse, payoutsResponse] = await Promise.all([
                     axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/refund/user?email=${userEmail}`),
-                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/get-user-payable?email=${userEmail}`)
+                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/get-user-payable?email=${userEmail}`),
+                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/allUser?email=${userEmail}`)
                 ]);
 
                 setRefunds(refundsResponse.data);
                 setPayoutAmount(payoutResponse.data);
+                setPayouts(payoutsResponse.data);
             } catch (error) {
                 console.error('Error fetching refunds:', error);
                 toast.error('Failed to load payouts');
@@ -101,6 +116,11 @@ const Payouts = () => {
             return;
         }
 
+        if (parseFloat(amount) > payoutAmount) {
+            toast.error('Amount cannot exceed available balance');
+            return;
+        }
+
         try {
             setPayoutLoading(true);
             const payoutData = {
@@ -111,27 +131,30 @@ const Payouts = () => {
                 bankCode: selectedBank.code
             };
 
-            await axios.post(
+            const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/request-user`,
                 payoutData
             );
             
-            toast.success('Payout request submitted successfully!');
+            toast.success(response.data || 'Payout request submitted successfully!');
             setIsPayoutModalOpen(false);
             setSelectedBank(null);
             setAccountNumber('');
             setAmount('');
             
-            // Refresh payout amount
+            // Refresh payout amount and payouts list
             if (session?.user?.email) {
-                const payoutResponse = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/get-user-payable?email=${session.user.email}`
-                );
+                const [payoutResponse, payoutsResponse] = await Promise.all([
+                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/get-user-payable?email=${session.user.email}`),
+                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payout/allUser?email=${session.user.email}`)
+                ]);
                 setPayoutAmount(payoutResponse.data);
+                setPayouts(payoutsResponse.data);
             }
         } catch (error: any) {
             console.error('Error requesting payout:', error);
-            toast.error(error.response?.data || 'Failed to request payout');
+            const errorMessage = error.response?.data || error.message || 'Failed to request payout';
+            toast.error(errorMessage);
         } finally {
             setPayoutLoading(false);
         }
@@ -206,7 +229,7 @@ const Payouts = () => {
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-[30px]">
                     {/* Sidebar */}
                     <div className="flex flex-col lg:block">
-                        <div onClick={() => {router.push("/buyer/profile")}} className="w-full lg:w-[200px] text-[#022B23] text-[12px] font-medium h-[44px] bg-[#f8f8f8] rounded-[10px] flex items-center px-[8px] justify-between mb-2 lg:mb-0 cursor-pointer hover:bg-gray-100">
+                        <div onClick={() => {router.push("/profile")}} className="w-full lg:w-[200px] text-[#022B23] text-[12px] font-medium h-[44px] bg-[#f8f8f8] rounded-[10px] flex items-center px-[8px] justify-between mb-2 lg:mb-0 cursor-pointer hover:bg-gray-100">
                             <p>Go to profile</p>
                             <Image src={arrowRight} alt={'image'}/>
                         </div>
@@ -251,9 +274,9 @@ const Payouts = () => {
                             </div>
                         </div>
                         
-                        <p className="text-[#000000] text-[14px] sm:text-[16px] font-medium">My Payouts ({refunds.length})</p>
+                        <p className="text-[#000000] text-[14px] sm:text-[16px] font-medium">My Payouts ({payouts.length + refunds.length})</p>
                         <div className="border-[0.5px] border-[#ededed] rounded-[12px] mb-[50px]">
-                            {refunds.length === 0 ? (
+                            {payouts.length === 0 && refunds.length === 0 ? (
                                 <div className="flex items-center justify-center h-[100px] sm:h-[151px] text-[#3D3D3D] text-[14px]">
                                     <p>No payouts yet</p>
                                 </div>
@@ -262,24 +285,63 @@ const Payouts = () => {
                                     <table className="w-full">
                                         <thead className="bg-[#f8f8f8] border-b border-[#ededed]">
                                             <tr>
-                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Order #</th>
-                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Shop</th>
+                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Type</th>
+                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Vendor</th>
                                                 <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Amount</th>
-                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Reason</th>
+                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Bank Details</th>
                                                 <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Status</th>
                                                 <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Date</th>
-                                                <th className="text-left p-4 text-[12px] font-medium text-[#7c7c7c]">Reference</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {/* Render payouts */}
+                                            {payouts
+                                                .sort((a, b) => new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime())
+                                                .map((payout, index) => {
+                                                    const isLastItem = index === payouts.length - 1 && refunds.length === 0;
+                                                    return (
+                                                        <tr key={`payout-${payout.id}`} className={`${!isLastItem ? "border-b border-[#ededed]" : ""}`}>
+                                                            <td className="p-4">
+                                                                <p className="text-[14px] font-medium text-[#1E1E1E]">Payout</p>
+                                                                <p className="text-[12px] text-[#7c7c7c]">#{payout.id}</p>
+                                                            </td>
+                                                            <td className="p-4">
+                                                                <p className="text-[14px] text-[#1E1E1E]">{payout.vendorName || 'N/A'}</p>
+                                                            </td>
+                                                            <td className="p-4">
+                                                                <p className="text-[14px] font-medium text-[#1E1E1E]">
+                                                                    ₦{Number(payout.paidAmount).toLocaleString()}
+                                                                </p>
+                                                            </td>
+                                                            <td className="p-4">
+                                                                <p className="text-[14px] text-[#1E1E1E]">{payout.bankName}</p>
+                                                                <p className="text-[12px] text-[#7c7c7c]">{payout.accountNumber}</p>
+                                                            </td>
+                                                            <td className="p-4">
+                                                                <div className={`inline-flex h-[32px] px-3 items-center text-[12px] font-medium justify-center rounded-[100px] ${payout.isPaid ? 'bg-[#F9FDE8] text-[#0C4F24]' : 'bg-[#FFFAEB] text-[#B54708]'}`}>
+                                                                    <p>{payout.isPaid ? 'PAID' : 'PENDING'}</p>
+                                                                </div>
+                                                            </td>
+                                                            <td className="p-4">
+                                                                <p className="text-[14px] text-[#1E1E1E]">{formatDate(payout.requestedAt)}</p>
+                                                                {payout.paidAt && (
+                                                                    <p className="text-[12px] text-[#7c7c7c]">Paid: {formatDate(payout.paidAt)}</p>
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            }
+                                            {/* Render refunds */}
                                             {refunds
                                                 .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                                                 .map((refund, index) => {
                                                     const isLastItem = index === refunds.length - 1;
                                                     return (
-                                                        <tr key={refund.id} className={`${!isLastItem ? "border-b border-[#ededed]" : ""}`}>
+                                                        <tr key={`refund-${refund.id}`} className={`${!isLastItem ? "border-b border-[#ededed]" : ""}`}>
                                                             <td className="p-4">
-                                                                <p className="text-[14px] font-medium text-[#1E1E1E]">#{refund.orderNumber}</p>
+                                                                <p className="text-[14px] font-medium text-[#1E1E1E]">Refund</p>
+                                                                <p className="text-[12px] text-[#7c7c7c]">#{refund.orderNumber}</p>
                                                             </td>
                                                             <td className="p-4">
                                                                 <p className="text-[14px] text-[#1E1E1E]">{refund.shopName}</p>
@@ -307,12 +369,6 @@ const Payouts = () => {
                                                                     <p className="text-[12px] text-[#7c7c7c]">Processed: {formatDate(refund.processedAt)}</p>
                                                                 )}
                                                             </td>
-                                                            <td className="p-4">
-                                                                <p className="text-[14px] text-[#1E1E1E]">{refund.refundReference || 'N/A'}</p>
-                                                                {refund.adminNotes && (
-                                                                    <p className="text-[12px] text-[#7c7c7c] mt-1">{refund.adminNotes}</p>
-                                                                )}
-                                                            </td>
                                                         </tr>
                                                     );
                                                 })
@@ -328,7 +384,7 @@ const Payouts = () => {
 
             {/* Payout Modal */}
             {isPayoutModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={() => setIsPayoutModalOpen(false)}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#808080]/20" onClick={() => setIsPayoutModalOpen(false)}>
                     <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-semibold">Request Payout</h2>
@@ -355,8 +411,8 @@ const Payouts = () => {
                                     required
                                 >
                                     <option value="">Select a bank</option>
-                                    {banks.map((bank) => (
-                                        <option key={bank.code} value={bank.code}>
+                                    {banks.map((bank, index) => (
+                                        <option key={`${bank.code}-${index}`} value={bank.code}>
                                             {bank.name}
                                         </option>
                                     ))}

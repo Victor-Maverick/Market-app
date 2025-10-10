@@ -4,12 +4,11 @@ import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import Pusher, { Channel } from 'pusher-js';
 import { chatService, ChatMessage } from '@/services/chatService';
-import { Send, Phone, Video } from 'lucide-react';
+import { Send } from 'lucide-react';
 import MarketPlaceHeader from '@/components/marketPlaceHeader';
 import BackButton from '@/components/BackButton';
 import blueCircle from '../../../public/assets/images/blueGreenCircle.png';
 import Image from 'next/image';
-import { usePusherCall } from '@/hooks/usePusherCall';
 import { toast } from 'react-hot-toast';
 
 // Remove the empty interface and use React.FC directly
@@ -24,58 +23,12 @@ const ChatPage: React.FC = () => {
     const pusherRef = useRef<Pusher | null>(null);
     const channelRef = useRef<Channel | null>(null);
 
-    // Call functionality
-    const { initiateCall, isConnected } = usePusherCall();
+
 
     const vendorEmail = searchParams.get('vendor') || '';
     const vendorName = searchParams.get('vendorName') || vendorEmail;
 
-    // Call handlers
-    const handleVoiceCall = async () => {
-        if (!session?.user?.email) {
-            toast.error('Please log in to make calls');
-            return;
-        }
 
-        if (!isConnected) {
-            toast.error('Call service not connected. Please try again.');
-            return;
-        }
-
-        if (session.user.email === vendorEmail) {
-            toast.error('You cannot call yourself');
-            return;
-        }
-
-        try {
-            await initiateCall(vendorEmail, 'voice');
-        } catch (error) {
-            toast.error('Failed to initiate call');
-        }
-    };
-
-    const handleVideoCall = async () => {
-        if (!session?.user?.email) {
-            toast.error('Please log in to make calls');
-            return;
-        }
-
-        if (!isConnected) {
-            toast.error('Call service not connected. Please try again.');
-            return;
-        }
-
-        if (session.user.email === vendorEmail) {
-            toast.error('You cannot call yourself');
-            return;
-        }
-
-        try {
-            await initiateCall(vendorEmail, 'video');
-        } catch (error) {
-            toast.error('Failed to initiate call');
-        }
-    };
 
     const initializeChat = useCallback(async () => {
         if (!session?.user?.email) return;
@@ -229,32 +182,7 @@ const ChatPage: React.FC = () => {
                   12:23 PM
                 </span>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <button 
-                                    onClick={handleVideoCall}
-                                    disabled={!isConnected || !session?.user?.email || session.user.email === vendorEmail}
-                                    className={`p-2 rounded-lg border border-gray-200 transition-colors ${
-                                        isConnected && session?.user?.email && session.user.email !== vendorEmail
-                                            ? 'hover:bg-blue-50 hover:border-blue-300 text-blue-600'
-                                            : 'text-gray-400 cursor-not-allowed'
-                                    }`}
-                                    title={isConnected ? 'Video Call' : 'Call service not connected'}
-                                >
-                                    <Video size={18} />
-                                </button>
-                                <button 
-                                    onClick={handleVoiceCall}
-                                    disabled={!isConnected || !session?.user?.email || session.user.email === vendorEmail}
-                                    className={`p-2 rounded-lg border border-gray-200 transition-colors ${
-                                        isConnected && session?.user?.email && session.user.email !== vendorEmail
-                                            ? 'hover:bg-green-50 hover:border-green-300 text-green-600'
-                                            : 'text-gray-400 cursor-not-allowed'
-                                    }`}
-                                    title={isConnected ? 'Voice Call' : 'Call service not connected'}
-                                >
-                                    <Phone size={18} />
-                                </button>
-                            </div>
+
                         </div>
                     </div>
 

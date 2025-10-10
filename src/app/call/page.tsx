@@ -20,8 +20,6 @@ const CallPage: React.FC = () => {
   // Get call parameters from URL
   const calleeEmail = searchParams.get('calleeEmail');
   const callType = searchParams.get('type') as 'video' | 'voice';
-  const vendorName = searchParams.get('vendorName');
-  const productName = searchParams.get('productName');
 
   useEffect(() => {
     // Prevent re-rendering and re-initiating call on page reload
@@ -101,13 +99,8 @@ const CallPage: React.FC = () => {
             Initiating {callType} call...
           </h2>
           <p className="text-gray-300">
-            Calling {vendorName || calleeEmail}
+            Calling {calleeEmail}
           </p>
-          {productName && (
-            <p className="text-sm text-gray-400 mt-2">
-              Regarding: {productName}
-            </p>
-          )}
         </div>
       </div>
     );

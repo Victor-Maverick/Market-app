@@ -14,7 +14,7 @@ interface PayoutResponse {
     paidAt: string | null;
     requestedAt: string;
     vendorName: string;
-    paid: boolean;
+    isPaid: boolean;
     accountNumber?: string;
     bankName?: string;
     bankCode?: string;

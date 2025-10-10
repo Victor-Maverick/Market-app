@@ -174,7 +174,6 @@ const StorePage = ({ params }: { params: Promise<PageParams> }) => {
           </div>
         </div>
 
-        {/* Store Stats */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-lg shadow-lg p-6 text-center">
             <div className="text-3xl font-bold text-blue-600 mb-2">{mockStore.products.length}</div>

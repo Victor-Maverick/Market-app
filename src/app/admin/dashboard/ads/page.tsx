@@ -6,6 +6,7 @@ import arrowDown from "../../../../../public/assets/images/arrow-down.svg";
 import TierEditModal from "@/components/tierEditModal";
 import { cleanPaymentType } from "@/utils/paymentUtils";
 import { getStatusStyling, getStatusText } from "@/utils/statusUtils";
+import { toast } from 'react-toastify';
 
 interface Tier {
     id: number;
@@ -198,7 +199,6 @@ const ActionsDropdown = ({
         setIsOpen(false);
         
         try {
-            // First verify the payment
             const verifyResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/verify?reference=${transaction.reference}`);
             if (!verifyResponse.ok) {
                 throw new Error('Failed to verify payment');
@@ -206,25 +206,19 @@ const ActionsDropdown = ({
             
             const verifyData = await verifyResponse.json();
             
-            if (verifyData.status === 'success' && verifyData.data?.status?.toLowerCase().includes('success')) {
-                // Update the transaction
-                const updateResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/update?reference=${transaction.reference}`, {
-                    method: 'PUT'
-                });
-                
-                if (!updateResponse.ok) {
-                    throw new Error('Failed to update transaction');
-                }
-                
-                const updateData = await updateResponse.json();
-                alert(`Transaction verified and updated successfully: ${updateData}`);
-                onTransactionUpdate();
+            // Handle VerifyPaymentResponse structure
+            // Check if status is false (error case)
+            if (verifyData.status === false || verifyData.status === 'false') {
+                toast.error('Transaction not found');
             } else {
-                alert('Payment verification failed or payment is not successful');
+                // Success case
+                toast.success('Verified successfully');
             }
+            
+            onTransactionUpdate();
         } catch (error) {
             console.error('Error verifying transaction:', error);
-            alert('Failed to verify transaction');
+            toast.error('Failed to verify transaction');
         } finally {
             setIsVerifying(false);
         }
@@ -388,7 +382,7 @@ const Ads = () => {
     const [isEditingFee, setIsEditingFee] = useState(false);
     const [newFeeAmount, setNewFeeAmount] = useState<string>('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState('');
+
     const transactionsPerPage = 5;
     const [loading, setLoading] = useState({
         tiers: true,
@@ -513,25 +507,11 @@ const Ads = () => {
         }).format(amount);
     };
 
-    // Filter transactions based on search term
-    const filteredTransactions = transactions.filter(transaction =>
-        transaction.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        transaction.payerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        transaction.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        cleanPaymentType(transaction.paymentType).toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
     // Calculate pagination
-    const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
+    const totalPages = Math.ceil(transactions.length / transactionsPerPage);
     const startIndex = (currentPage - 1) * transactionsPerPage;
     const endIndex = startIndex + transactionsPerPage;
-    const currentTransactions = filteredTransactions.slice(startIndex, endIndex);
-
-    // Reset to first page when search term changes
-    const handleSearchChange = (value: string) => {
-        setSearchTerm(value);
-        setCurrentPage(1);
-    };
+    const currentTransactions = transactions.slice(startIndex, endIndex);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -691,21 +671,13 @@ const Ads = () => {
                     <div className="w-full h-auto sm:h-[91px] flex flex-col sm:flex-row sm:items-center justify-between px-[15px] sm:px-[24px] pt-[15px] sm:pt-[20px] pb-[15px] sm:pb-[19px] gap-[15px] sm:gap-0">
                         <div className="flex flex-col gap-[4px]">
                             <div className="h-auto sm:h-[28px] flex items-center">
-                                <p className="text-[16px] sm:text-[18px] font-medium text-[#101828]">Transactions ({filteredTransactions.length})</p>
+                                <p className="text-[16px] sm:text-[18px] font-medium text-[#101828]">Transactions ({transactions.length})</p>
                             </div>
                             <div className="flex h-auto sm:h-[20px] items-center">
                                 <p className="text-[12px] sm:text-[14px] text-[#667085]">View and manage all transactions here</p>
                             </div>
                         </div>
-                        <div className="flex gap-2 items-center bg-[#FFFFFF] border-[0.5px] border-[#F2F2F2] text-black px-3 sm:px-4 py-2 shadow-sm rounded-sm w-full sm:w-auto">
-                            <Image src={searchImg} alt="Search Icon" width={18} height={18} className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px]" />
-                            <input 
-                                placeholder="Search transactions..." 
-                                value={searchTerm}
-                                onChange={(e) => handleSearchChange(e.target.value)}
-                                className="w-full sm:w-[175px] text-[#707070] text-[13px] sm:text-[14px] focus:outline-none" 
-                            />
-                        </div>
+
                     </div>
 
                     {/* Desktop Table Header */}
@@ -769,7 +741,7 @@ const Ads = () => {
                             ))
                         ) : error.transactions ? (
                             <div className="text-red-500 p-4">{error.transactions}</div>
-                        ) : filteredTransactions.length > 0 ? (
+                        ) : transactions.length > 0 ? (
                             currentTransactions.map((transaction, index) => (
                                 <AdsTableRow
                                     key={transaction.id}
@@ -780,17 +752,17 @@ const Ads = () => {
                             ))
                         ) : (
                             <div className="p-4 text-center text-gray-500">
-                                {searchTerm ? 'No transactions found matching your search' : 'No transactions found'}
+                                No transactions found
                             </div>
                         )}
                     </div>
 
                     {/* Pagination Controls */}
-                    {filteredTransactions.length > transactionsPerPage && (
+                    {transactions.length > transactionsPerPage && (
                         <div className="flex items-center justify-between px-[15px] sm:px-[24px] py-[15px] sm:py-[20px] border-t border-[#EAECF0]">
                             <div className="flex items-center gap-2 text-sm text-[#667085]">
                                 <span>
-                                    Showing {startIndex + 1} to {Math.min(endIndex, filteredTransactions.length)} of {filteredTransactions.length} transactions
+                                    Showing {startIndex + 1} to {Math.min(endIndex, transactions.length)} of {transactions.length} transactions
                                 </span>
                             </div>
                             <div className="flex items-center gap-2">

@@ -8,22 +8,12 @@ import { useCallPresence } from '@/providers/CallPresenceProvider';
 import { toast } from 'react-toastify';
 
 interface WebRTCCallButtonsProps {
-  vendorEmail: string;
-  vendorName?: string;
-  productId?: number;
-  shopId?: number;
-  productName?: string;
-  shopName?: string;
+  calleeEmail: string;
   className?: string;
 }
 
 const WebRTCCallButtons: React.FC<WebRTCCallButtonsProps> = ({
-  vendorEmail,
-  vendorName,
-  productId,
-  shopId,
-  productName,
-  shopName,
+  calleeEmail,
   className = ""
 }) => {
   const { data: session } = useSession();
@@ -41,18 +31,15 @@ const WebRTCCallButtons: React.FC<WebRTCCallButtonsProps> = ({
       return;
     }
 
-    if (session.user.email === vendorEmail) {
+    if (session.user.email === calleeEmail) {
       toast.error('You cannot call yourself');
       return;
     }
 
     // Redirect to call page with parameters
     const params = new URLSearchParams({
-      calleeEmail: vendorEmail,
-      type: 'voice',
-      ...(vendorName && { vendorName }),
-      ...(productName && { productName }),
-      ...(shopName && { shopName })
+      calleeEmail: calleeEmail,
+      type: 'voice'
     });
 
     router.push(`/call?${params.toString()}`);
@@ -69,23 +56,23 @@ const WebRTCCallButtons: React.FC<WebRTCCallButtonsProps> = ({
       return;
     }
 
-    if (session.user.email === vendorEmail) {
+    if (session.user.email === calleeEmail) {
       toast.error('You cannot call yourself');
       return;
     }
     // Redirect to call page with parameters
     const params = new URLSearchParams({
-      calleeEmail: vendorEmail,
-      type: 'video',
-      ...(vendorName && { vendorName }),
-      ...(productName && { productName }),
-      ...(shopName && { shopName })
+      calleeEmail: calleeEmail,
+      type: 'video'
     });
 
     router.push(`/call?${params.toString()}`);
   };
 
-  if (!session?.user?.email || session.user.email === vendorEmail) {
+  // Don't show call buttons for ADMIN users or if no session/same user
+  if (!session?.user?.email || 
+      session.user.email === calleeEmail || 
+      session.user.roles?.includes('ADMIN')) {
     return null;
   }
 

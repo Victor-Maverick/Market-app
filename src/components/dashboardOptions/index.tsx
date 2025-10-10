@@ -178,7 +178,6 @@ const DashboardOptions = ({ initialSelected = 'dashboard' }: DashboardOptionsPro
                 isChat: true
             },
             { id: 'reviews', icon: star, label: 'Reviews and Campaigns', widthClass: 'w-[188px]' },
-            { id: 'calls', icon: chatImg, label: 'Calls', widthClass: 'w-[81px]' },
             {
                 id: 'notifications',
                 icon: notificationImg,

@@ -9,6 +9,7 @@ import axios from "axios";
 import {ToastContainer} from "react-toastify";
 import { toast } from 'react-toastify';
 import { SkeletonLoader } from '@/components/LoadingSkeletons';
+import ProductReviewModal from '@/components/ProductReviewModal';
 
 
 interface OrderItemDto {
@@ -325,98 +326,7 @@ const OrderModal = ({
     );
 };
 
-const ReviewModal = ({
-                         product,
-                         onClose,
-                         onSubmit
-                     }: {
-    product: OrderItemDto;
-    onClose: () => void;
-    onSubmit: (rating: number, comment: string) => void;
-}) => {
-    const [rating, setRating] = useState<number>(0);
-    const [hoverRating, setHoverRating] = useState<number>(0);
-    const [comment, setComment] = useState<string>('');
 
-    const handleSubmit = () => {
-        if (rating === 0) {
-            alert('Please select a rating');
-            return;
-        }
-        onSubmit(rating, comment);
-    };
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#808080]/20">
-            <div className="bg-white rounded-lg p-[30px] w-full max-w-md">
-                <div className="flex border-b-[0.5px] pb-3 border-[#ededed] justify-between items-center">
-                    <h2 className="text-[16px] text-[#022B23] font-medium">Review Product</h2>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-                        &times;
-                    </button>
-                </div>
-
-                <div className="mt-4">
-                    <div className="mb-4">
-                        <h3 className="text-[14px] font-medium mb-2">{product.productName}</h3>
-                        <div className="flex items-center gap-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <button
-                                    key={star}
-                                    className="text-2xl focus:outline-none"
-                                    onClick={() => setRating(star)}
-                                    onMouseEnter={() => setHoverRating(star)}
-                                    onMouseLeave={() => setHoverRating(0)}
-                                >
-                                    {star <= (hoverRating || rating) ? (
-                                        <span className="text-yellow-500">★</span>
-                                    ) : (
-                                        <span className="text-gray-300">★</span>
-                                    )}
-                                </button>
-                            ))}
-                            <span className="ml-2 text-sm text-gray-500">
-                {hoverRating || rating > 0 ? `${hoverRating || rating}.0` : 'Rate this product'}
-              </span>
-                        </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="review-comment" className="block text-sm font-medium text-gray-700 mb-1">
-                            Your Review
-                        </label>
-                        <textarea
-                            id="review-comment"
-                            rows={4}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#022B23]"
-                            placeholder="Share your experience with this product..."
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="flex justify-end gap-3 mt-6">
-                        <button
-                            onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={handleSubmit}
-                            disabled={rating === 0}
-                            className={`px-4 py-2 text-sm font-medium text-white rounded-md ${
-                                rating === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#022B23] hover:bg-[#033a30]'
-                            }`}
-                        >
-                            Submit Review
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 const OrderActionsDropdown = ({
                                   order,
@@ -546,43 +456,7 @@ const Orders = () => {
         setReviewItem(null);
     };
 
-    const handleSubmitReview = async (rating: number, comment: string) => {
-        if (!reviewItem) return;
 
-        try {
-            const userEmail = localStorage.getItem('userEmail');
-            if (!userEmail) {
-                router.push('/login');
-                return;
-            }
-
-            await toast.promise(
-                axios.post(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/review/review-product`,
-                    {
-                        email: userEmail,
-                        productId: reviewItem.productId,
-                        rating: rating,
-                        comment: comment
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                ),
-                {
-                    pending: 'Submitting review...',
-                    success: 'Review submitted successfully!',
-                    error: 'Failed to submit review. Please try again.'
-                }
-            );
-
-            handleCloseReviewModal();
-        } catch (error) {
-            console.error('Error submitting review:', error);
-        }
-    };
 
     const handleOpenDisputeModal = (item: OrderItemDto) => {
         setDisputeItem(item);
@@ -943,7 +817,7 @@ const Orders = () => {
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-[30px]">
                     {/* Sidebar - Hidden on mobile, shown as horizontal tabs on tablet */}
                     <div className="flex flex-col lg:block">
-                        <div onClick={() => {router.push("/buyer/profile")}} className="w-full lg:w-[200px] text-[#022B23] text-[12px] font-medium h-[44px] bg-[#f8f8f8] rounded-[10px] flex items-center px-[8px] justify-between mb-2 lg:mb-0 cursor-pointer hover:bg-gray-100">
+                        <div onClick={() => {router.push("/profile")}} className="w-full lg:w-[200px] text-[#022B23] text-[12px] font-medium h-[44px] bg-[#f8f8f8] rounded-[10px] flex items-center px-[8px] justify-between mb-2 lg:mb-0 cursor-pointer hover:bg-gray-100">
                             <p>Go to profile</p>
                             <Image src={arrowRight} alt={'image'}/>
                         </div>
@@ -1241,10 +1115,12 @@ const Orders = () => {
                 </div>
             )}
             {reviewModalOpen && reviewItem && (
-                <ReviewModal
-                    product={reviewItem}
+                <ProductReviewModal
+                    isOpen={reviewModalOpen}
                     onClose={handleCloseReviewModal}
-                    onSubmit={handleSubmitReview}
+                    productId={reviewItem.productId}
+                    productName={reviewItem.productName}
+                    productImage={reviewItem.productImage}
                 />
             )}
 

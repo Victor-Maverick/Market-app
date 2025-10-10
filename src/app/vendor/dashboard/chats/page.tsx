@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { MessageCircle, Phone, Video, Send } from 'lucide-react';
+import { MessageCircle, Send } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { chatService, ChatMessage } from '@/services/chatService';
 import Pusher from 'pusher-js';
@@ -51,8 +51,12 @@ const VendorChatsPage = () => {
 
     const fetchConversations = useCallback(async () => {
         try {
-            if (conversations.length === 0) {
-                setLoading(true);
+            setLoading(true);
+
+            // Don't fetch conversations for ADMIN users
+            if (session?.user?.roles?.includes('ADMIN')) {
+                setLoading(false);
+                return;
             }
 
             console.log('=== FETCHING VENDOR CONVERSATIONS FROM BACKEND ===');
@@ -74,29 +78,15 @@ const VendorChatsPage = () => {
 
             console.log('Transformed conversations:', transformedConversations);
 
-            // Check for new messages and show notification
-            if (conversations.length > 0) {
-                const newMessages = transformedConversations.filter(newConv => {
-                    const existingConv = conversations.find(conv => conv.id === newConv.id);
-                    return !existingConv || new Date(newConv.lastMessageTime) > new Date(existingConv.lastMessageTime);
-                });
-
-                if (newMessages.length > 0) {
-                    console.log('New messages detected:', newMessages);
-                }
-            }
-
             setConversations(transformedConversations);
 
         } catch (error) {
             console.error('Error fetching conversations:', error);
-            if (conversations.length === 0) {
-                toast.error('Failed to load conversations');
-            }
+            toast.error('Failed to load conversations');
         } finally {
             setLoading(false);
         }
-    }, [session?.user?.email, conversations]);
+    }, [session?.user?.email]);
 
     useEffect(() => {
         if (!session?.user?.email) {
@@ -105,8 +95,14 @@ const VendorChatsPage = () => {
         }
 
         fetchConversations();
-        // Set up polling for new messages every 10 seconds
-        const interval = setInterval(fetchConversations, 10000);
+        
+        // Set up polling for new messages every 30 seconds (reduced frequency)
+        // Only poll if we have conversations or it's the first load
+        const interval = setInterval(() => {
+            if (conversations.length > 0 || loading) {
+                fetchConversations();
+            }
+        }, 30000);
 
         return () => {
             clearInterval(interval);
@@ -119,7 +115,7 @@ const VendorChatsPage = () => {
                 pusherRef.current.disconnect();
             }
         };
-    }, [session, router, fetchConversations, conversationId]); // Added all dependencies
+    }, [session?.user?.email, router]); // Removed fetchConversations and conversationId from dependencies
 
 
 
@@ -259,10 +255,7 @@ const VendorChatsPage = () => {
 
 
 
-    const initiateCall = (buyerEmail: string, type: 'voice' | 'video') => {
-        // This would integrate with your calling service
-        toast.info(`${type} call feature coming soon!`);
-    };
+
 
     const filteredConversations = conversations.filter(conv =>
         (conv.buyerName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
@@ -309,8 +302,6 @@ const VendorChatsPage = () => {
                         <div className="px-4 py-3 border-b border-gray-200">
                             <div className="flex gap-4 text-sm">
                                 <button className="text-[#022B23] font-medium border-b-2 border-[#022B23] pb-1">All chats</button>
-                                <button className="text-gray-500 hover:text-[#022B23]">New</button>
-                                <button className="text-gray-500 hover:text-[#022B23]">Older</button>
                             </div>
                         </div>
 
@@ -394,22 +385,7 @@ const VendorChatsPage = () => {
                                     12:23 PM
                                 </span>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <button
-                                            onClick={() => initiateCall(selectedConversation.buyerEmail, 'video')}
-                                            className="p-2 hover:bg-gray-100 rounded-lg border border-gray-200"
-                                            title="Video Call"
-                                        >
-                                            <Video size={18} className="text-gray-600" />
-                                        </button>
-                                        <button
-                                            onClick={() => initiateCall(selectedConversation.buyerEmail, 'voice')}
-                                            className="p-2 hover:bg-gray-100 rounded-lg border border-gray-200"
-                                            title="Voice Call"
-                                        >
-                                            <Phone size={18} className="text-gray-600" />
-                                        </button>
-                                    </div>
+
                                 </div>
                             </div>
 

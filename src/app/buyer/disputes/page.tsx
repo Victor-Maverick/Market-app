@@ -682,7 +682,7 @@ const Disputes = () => {
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-[30px]">
                     {/* Sidebar - Hidden on mobile, shown as horizontal tabs on tablet */}
                     <div className="flex flex-col lg:block">
-                        <div onClick={() => {router.push("/buyer/profile")}} className="w-full lg:w-[200px] text-[#022B23] text-[12px] font-medium h-[44px] bg-[#f8f8f8] rounded-[10px] flex items-center px-[8px] justify-between mb-2 lg:mb-0 cursor-pointer hover:bg-gray-100">
+                        <div onClick={() => {router.push("/profile")}} className="w-full lg:w-[200px] text-[#022B23] text-[12px] font-medium h-[44px] bg-[#f8f8f8] rounded-[10px] flex items-center px-[8px] justify-between mb-2 lg:mb-0 cursor-pointer hover:bg-gray-100">
                             <p>Go to profile</p>
                             <Image src={arrowRight} alt={'image'}/>
                         </div>

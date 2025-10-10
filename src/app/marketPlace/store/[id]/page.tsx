@@ -152,14 +152,12 @@ const StorePage = () => {
     const params = useParams();
     const router = useRouter();
 
-    const [selectedMarket, setSelectedMarket] = useState("Wurukum");
     const [products, setProducts] = useState<Product[]>([]);
     const [shopData, setShopData] = useState<ShopData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
     const shopId = params.id as string;
-    const rating = 4.5; // You can make this dynamic later
 
     const fetchStoreData = useCallback(async () => {
         try {
@@ -271,38 +269,6 @@ const StorePage = () => {
         <>
             <MarketPlaceHeader />
             <div className="w-full border-b-[0.5px] border-[#EDEDED]">
-                <div
-                    className="h-[56px] sm:h-[66px] bg-cover w-full flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 lg:px-25 bg-no-repeat bg-center relative gap-2 sm:gap-0 py-2 sm:py-0"
-                    style={{ backgroundImage: `url(${shadow.src})` }}
-                >
-                    <div className="w-full sm:flex-1">
-                        <SearchBar/>
-                    </div>
-                    <div className="flex ml-0 sm:ml-[10px] gap-[2px] p-[2px] h-[44px] sm:h-[52px] items-center justify-between border border-[#ededed] rounded-[4px] w-full sm:w-auto">
-                        <div className="bg-[#F9F9F9] text-black px-[6px] sm:px-[8px] rounded-[4px] flex items-center justify-center h-[40px] sm:h-[48px] flex-1 sm:flex-none">
-                            <select className="bg-[#F9F9F9] text-[#1E1E1E] text-[12px] sm:text-[14px] rounded-sm text-center w-full focus:outline-none">
-                                <option>Benue State</option>
-                                <option>Enugu State</option>
-                                <option>Lagos State</option>
-                            </select>
-                        </div>
-
-                        <div className="relative flex-1 sm:flex-none">
-                            <div className="flex items-center bg-[#F9F9F9] px-[6px] sm:px-[8px] h-[40px] sm:h-[48px] rounded-[4px]">
-                                <Image src={marketIcon} alt="Market Icon" width={18} height={18} className="sm:w-5 sm:h-5" />
-                                <select
-                                    className="bg-[#F9F9F9] text-[#1E1E1E] text-[12px] sm:text-[14px] items-center pr-1 focus:outline-none w-full"
-                                    onChange={(e) => setSelectedMarket(e.target.value)}
-                                    value={selectedMarket}
-                                >
-                                    <option>Wurukum market</option>
-                                    <option>Gboko Market</option>
-                                    <option>Otukpo Market</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="h-[48px] px-4 sm:px-6 lg:px-25 gap-[8px] items-center flex">
                     <button onClick={() => router.back()}>
                         <Image src={arrowBack} alt={'back'} className="cursor-pointer w-4 h-4 sm:w-5 sm:h-5"/>
@@ -358,10 +324,7 @@ const StorePage = () => {
                                     className="bg-[#ffeebe] text-[#461602] hover:bg-[#ffd700] w-full sm:w-[165px] h-[44px] sm:h-[48px] rounded-[12px] sm:rounded-[14px] text-[14px]"
                                 />
                                 <WebRTCCallButtons
-                                    vendorEmail={shopData.vendorEmail || (products.length > 0 ? products[0].vendorEmail : 'vendor@example.com')}
-                                    vendorName={shopData.vendorName || shopData.name}
-                                    shopName={shopData.name}
-                                    shopId={shopData.id}
+                                    calleeEmail={shopData.vendorEmail || (products.length > 0 ? products[0].vendorEmail : 'vendor@example.com')}
                                     className="w-full sm:w-auto"
                                 />
                             </div>
@@ -371,13 +334,6 @@ const StorePage = () => {
                         <div className="w-full lg:w-[442px] flex flex-col gap-4 sm:gap-[24px]">
                             {/* Rating Box */}
                             <div className="flex justify-start lg:justify-end">
-                                <div className="bg-[#f9f9f9] border border-[#ededed] rounded-[12px] sm:rounded-[14px] p-[16px] sm:p-[20px] w-[180px] sm:w-[215px] h-[70px] sm:h-[83px]">
-                                    <p className="text-[12px] sm:text-[14px] text-[#0D0C22] font-medium">Shop rating</p>
-                                    <div className="flex items-center gap-[12px] sm:gap-[16px] mt-1">
-                                        <span className="text-lg sm:text-xl font-bold text-gray-800">{rating}</span>
-                                        <div className="flex gap-[2px] sm:gap-[4px]">{renderStars(rating)}</div>
-                                    </div>
-                                </div>
                             </div>
 
                             {/* Categories - You might want to make this dynamic based on store products */}

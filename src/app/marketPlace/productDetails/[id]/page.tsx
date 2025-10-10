@@ -20,9 +20,9 @@ import wishlist from '../../../../../public/assets/images/wishHeart.png';
 import orangeCircle from '../../../../../public/assets/images/orangeCirlce.png';
 import greenVerify from '../../../../../public/assets/images/limeVerify.png';
 import { useSession } from 'next-auth/react';
-import WebRTCCallButtons from '@/components/WebRTCCallButtons';
 import ChatButton from '@/components/ChatButton';
 import { SkeletonLoader } from '@/components/LoadingSkeletons';
+import WebRTCCallButtons from "@/components/WebRTCCallButtons";
 
 interface Review {
     id: number;
@@ -216,7 +216,6 @@ const ProductDetails = ({ params }: PageProps) => {
 
     const processBuyNow = async () => {
         if (!product) return;
-
         // Validate required fields
         if (buyNowDeliveryMethod === 'delivery' && !buyNowAddress.trim()) {
             toast.error('Please enter delivery address');
@@ -321,8 +320,6 @@ const ProductDetails = ({ params }: PageProps) => {
         product.sideImage3Url,
         product.sideImage4Url,
     ].filter(Boolean);
-
-
     return (
         <>
             <ProductDetailHeader />
@@ -431,12 +428,7 @@ const ProductDetails = ({ params }: PageProps) => {
                                 className="bg-[#ffeebe] text-[#461602] hover:bg-[#ffd700] w-full sm:w-[165px] h-[48px] rounded-[14px]"
                             />
                             <WebRTCCallButtons
-                                vendorEmail={product.vendorEmail}
-                                vendorName={product.vendorName}
-                                shopName={product.shopName}
-                                productName={product.name}
-                                productId={product.id}
-                                shopId={product.shopId}
+                                calleeEmail={product.vendorEmail}
                                 className="w-full sm:w-auto md:w-[165px]"
                             />
                         </div>

@@ -7,6 +7,8 @@ import BackButton from "@/components/BackButton";
 import axios from "axios";
 import {ToastContainer, toast} from "react-toastify";
 import { SkeletonLoader } from "@/components/LoadingSkeletons";
+import ProductReviewModal from "@/components/ProductReviewModal";
+import { useSession } from "next-auth/react";
 
 interface OrderItemDto {
     id: number;
@@ -41,6 +43,7 @@ interface BuyerOrderResponse {
 const OrderDetails = () => {
     const router = useRouter();
     const params = useParams();
+    const { data: session } = useSession();
     const orderNumber = params.orderId as string;
     const [order, setOrder] = useState<BuyerOrderResponse | null>(null);
     const [loading, setLoading] = useState(true);
@@ -48,6 +51,8 @@ const OrderDetails = () => {
     const [disputeItem, setDisputeItem] = useState<OrderItemDto | null>(null);
     const [disputeReason, setDisputeReason] = useState('');
     const [disputeImage, setDisputeImage] = useState<File | null>(null);
+    const [reviewModalOpen, setReviewModalOpen] = useState(false);
+    const [reviewItem, setReviewItem] = useState<OrderItemDto | null>(null);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -104,6 +109,16 @@ const OrderDetails = () => {
         if (e.target.files && e.target.files[0]) {
             setDisputeImage(e.target.files[0]);
         }
+    };
+
+    const handleOpenReviewModal = (item: OrderItemDto) => {
+        setReviewItem(item);
+        setReviewModalOpen(true);
+    };
+
+    const handleCloseReviewModal = () => {
+        setReviewModalOpen(false);
+        setReviewItem(null);
     };
 
 
@@ -332,22 +347,30 @@ const OrderDetails = () => {
                                             <td className="p-2 sm:p-4 text-[#101828] text-sm sm:text-base">₦{Number(item.unitPrice).toLocaleString()}</td>
                                             <td className="p-2 sm:p-4 text-[#101828] font-medium text-sm sm:text-base">₦{Number(item.totalPrice).toLocaleString()}</td>
                                             <td className="p-2 sm:p-4">
-                                                {order.status === 'SHIPPED' && item.itemStatus !== 'DISPUTED' && (
-                                                    <div className="relative">
+                                                <div className="flex flex-col gap-2">
+                                                    {order.status === 'SHIPPED' && item.itemStatus !== 'DISPUTED' && (
                                                         <button
                                                             onClick={() => handleOpenDisputeModal(item)}
                                                             className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors w-full min-w-[100px]"
                                                         >
                                                             Dispute
                                                         </button>
-                                                    </div>
-                                                )}
-                                                {item.itemStatus === 'DISPUTED' && (
-                                                    <span className="text-xs text-gray-500 px-3 py-2">Disputed</span>
-                                                )}
-                                                {order.status !== 'SHIPPED' && item.itemStatus !== 'DISPUTED' && (
-                                                    <span className="text-xs text-gray-500 px-3 py-2">-</span>
-                                                )}
+                                                    )}
+                                                    {(order.status === 'COMPLETED' || order.status === 'DELIVERED') && item.itemStatus !== 'DISPUTED' && (
+                                                        <button
+                                                            onClick={() => handleOpenReviewModal(item)}
+                                                            className="bg-[#022B23] hover:bg-[#033a30] text-white px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors w-full min-w-[100px]"
+                                                        >
+                                                            Rate Product
+                                                        </button>
+                                                    )}
+                                                    {item.itemStatus === 'DISPUTED' && (
+                                                        <span className="text-xs text-gray-500 px-3 py-2">Disputed</span>
+                                                    )}
+                                                    {order.status !== 'SHIPPED' && order.status !== 'COMPLETED' && order.status !== 'DELIVERED' && item.itemStatus !== 'DISPUTED' && (
+                                                        <span className="text-xs text-gray-500 px-3 py-2">-</span>
+                                                    )}
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -485,6 +508,17 @@ const OrderDetails = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Product Review Modal */}
+            {reviewModalOpen && reviewItem && (
+                <ProductReviewModal
+                    isOpen={reviewModalOpen}
+                    onClose={handleCloseReviewModal}
+                    productId={reviewItem.productId}
+                    productName={reviewItem.productName}
+                    productImage={reviewItem.productImage}
+                />
             )}
 
             <ToastContainer
