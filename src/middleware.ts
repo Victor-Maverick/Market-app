@@ -11,12 +11,12 @@ interface CustomToken {
 
 // Define protected routes and their required roles
 const protectedRoutes: Record<string, string[]> = {
-    '/admin': ['ADMIN'],
-    '/vendor': ['VENDOR', 'ADMIN'], // Admins can access vendor routes
-    '/logistics': ['LOGISTICS', 'ADMIN'], // Admins can access logistics
-    '/rider': ['RIDER', 'ADMIN'], // Admins can access rider routes
-    '/marketplace': ['BUYER', 'VENDOR', 'ADMIN', 'LOGISTICS', 'RIDER'], // All roles can access
-    '/cart': ['BUYER', 'VENDOR', 'ADMIN'] // Buyers, vendors and admins can access
+    '/admin': ['ADMIN', 'SUPER_ADMIN'],
+    '/vendor': ['VENDOR', 'ADMIN', 'SUPER_ADMIN'], // Admins and super admins can access vendor routes
+    '/logistics': ['LOGISTICS', 'ADMIN', 'SUPER_ADMIN'], // Admins and super admins can access logistics
+    '/rider': ['RIDER', 'ADMIN', 'SUPER_ADMIN'], // Admins and super admins can access rider routes
+    '/marketplace': ['BUYER', 'VENDOR', 'ADMIN', 'SUPER_ADMIN', 'LOGISTICS', 'RIDER'], // All roles can access
+    '/cart': ['BUYER', 'VENDOR', 'ADMIN', 'SUPER_ADMIN'] // Buyers, vendors, admins and super admins can access
 };
 
 export async function middleware(req: NextRequest) {

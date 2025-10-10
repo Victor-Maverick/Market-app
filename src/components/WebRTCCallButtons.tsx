@@ -72,7 +72,8 @@ const WebRTCCallButtons: React.FC<WebRTCCallButtonsProps> = ({
   // Don't show call buttons for ADMIN users or if no session/same user
   if (!session?.user?.email || 
       session.user.email === calleeEmail || 
-      session.user.roles?.includes('ADMIN')) {
+      session.user.roles?.includes('ADMIN') || 
+      session.user.roles?.includes('SUPER_ADMIN')) {
     return null;
   }
 

@@ -75,7 +75,7 @@ const MarketPlaceHeader = () => {
         if (roles.includes('VENDOR') && roles.includes('BUYER')) {
             router.push('/vendor/dashboard');
         }
-        else if (roles.includes('ADMIN')) {
+        else if (roles.includes('ADMIN') || roles.includes('SUPER_ADMIN')) {
             router.push('/admin/dashboard/main');
         }
         else if (roles.includes('LOGISTICS')) {
@@ -94,7 +94,7 @@ const MarketPlaceHeader = () => {
             markNotificationsAsRead();
             // Route based on user role for notifications
             const roles = userProfile?.roles || [];
-            if (roles.includes('ADMIN')) {
+            if (roles.includes('ADMIN') || roles.includes('SUPER_ADMIN')) {
                 router.push('/admin/dashboard/notifications');
             } else {
                 router.push('/buyer/notifications');

@@ -711,12 +711,16 @@ const AddAdminModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 };
 
 const RolesTab = () => {
+    const { data: session } = useSession();
     const [showModal, setShowModal] = useState(false);
     const [admins, setAdmins] = useState<UserResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [deleteError, setDeleteError] = useState<string | null>(null);
     const [deleteSuccess, setDeleteSuccess] = useState<string | null>(null);
+
+    // Check if current user is SUPER_ADMIN
+    const isSuperAdmin = session?.user?.roles?.includes('SUPER_ADMIN');
 
     useEffect(() => {
         const fetchAdmins = async () => {
@@ -794,40 +798,47 @@ const RolesTab = () => {
                         </div>
                     ) : (
                         <div className="flex flex-col mb-[28px] mt-[30px] gap-[8px]">
-                            {admins.map((admin) => (
-                                <div
-                                    key={admin.id}
-                                    className="flex justify-between items-center h-[62px] w-full pl-[15px] pr-[30px] py-[14px] leading-tight"
-                                >
-                                    <div className="flex gap-[8px] items-center">
-                                        <Image src={settingUser} alt="user" />
-                                        <div className="flex flex-col">
-                                            <p className="text-[#101828] font-medium text-[14px]">
-                                                {admin.firstName} {admin.lastName}
-                                            </p>
-                                            <p className="text-[#667085] text-[16px]">{admin.email}</p>
-                                            <span className="w-[51px] text-[#022B23] text-[12px] font-medium py-[2px] px-[8px] bg-[#F9FDE8] rounded-[16px] flex justify-center items-center h-[22px]">
-                        Admin
-                      </span>
-                                        </div>
-                                    </div>
+                            {admins.map((admin) => {
+                                const isCurrentUser = admin.email === session?.user?.email;
+                                return (
                                     <div
-                                        className="flex cursor-pointer hover:shadow-sm justify-center text-[#023047] text-[14px] items-center rounded-[8px] w-[86px] h-[40px] border-[1px] border-[#D0D5DD]"
-                                        onClick={() => handleDeleteAdmin(admin.id)}
+                                        key={admin.id}
+                                        className="flex justify-between items-center h-[62px] w-full pl-[15px] pr-[30px] py-[14px] leading-tight"
                                     >
-                                        <p>Remove</p>
+                                        <div className="flex gap-[8px] items-center">
+                                            <Image src={settingUser} alt="user" />
+                                            <div className="flex flex-col">
+                                                <p className="text-[#101828] font-medium text-[14px]">
+                                                    {isCurrentUser ? 'You' : `${admin.firstName} ${admin.lastName}`}
+                                                </p>
+                                                <p className="text-[#667085] text-[16px]">{admin.email}</p>
+                                                <span className="w-[51px] text-[#022B23] text-[12px] font-medium py-[2px] px-[8px] bg-[#F9FDE8] rounded-[16px] flex justify-center items-center h-[22px]">
+                            Admin
+                          </span>
+                                            </div>
+                                        </div>
+                                        {!isCurrentUser && isSuperAdmin && (
+                                            <div
+                                                className="flex cursor-pointer hover:shadow-sm justify-center text-[#023047] text-[14px] items-center rounded-[8px] w-[86px] h-[40px] border-[1px] border-[#D0D5DD]"
+                                                onClick={() => handleDeleteAdmin(admin.id)}
+                                            >
+                                                <p>Remove</p>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     )}
 
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="w-[156px] h-[40px] mb-[15px] rounded-[8px] ml-[15px] cursor-pointer hover:shadow-sm text-[#023047] font-medium text-[14px] px-[16px] py-[10px] border border-[#D0D5DD]"
-                    >
-                        Add team member
-                    </button>
+                    {isSuperAdmin && (
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="w-[156px] h-[40px] mb-[15px] rounded-[8px] ml-[15px] cursor-pointer hover:shadow-sm text-[#023047] font-medium text-[14px] px-[16px] py-[10px] border border-[#D0D5DD]"
+                        >
+                            Add team member
+                        </button>
+                    )}
                 </div>
             </div>
         </>
@@ -836,9 +847,13 @@ const RolesTab = () => {
 
 const AdminSettingsClient = () => {
     const searchParams = useSearchParams();
+    const { data: session } = useSession();
     const initialTab = searchParams.get('tab') as 'general' | 'roles' || 'general';
     const [activeTab, setActiveTab] = useState<'general' | 'roles'>(initialTab);
     const router = useRouter();
+
+    // Check if current user is SUPER_ADMIN
+    const isSuperAdmin = session?.user?.roles?.includes('SUPER_ADMIN');
 
     const handleTabChange = (tab: 'general' | 'roles') => {
         setActiveTab(tab);
@@ -862,18 +877,20 @@ const AdminSettingsClient = () => {
                         >
                             General settings
                         </p>
-                        <p
-                            className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'roles' ? 'font-medium border-b-2 border-[#000000]' : 'text-[#707070]'}`}
-                            onClick={() => handleTabChange('roles')}
-                        >
-                            Roles
-                        </p>
+                        {isSuperAdmin && (
+                            <p
+                                className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'roles' ? 'font-medium border-b-2 border-[#000000]' : 'text-[#707070]'}`}
+                                onClick={() => handleTabChange('roles')}
+                            >
+                                Roles
+                            </p>
+                        )}
                     </div>
                 </div>
 
                 <div className="bg-white rounded-lg mx-[20px] mb-8">
                     {activeTab === 'general' && <GeneralTab />}
-                    {activeTab === 'roles' && <RolesTab />}
+                    {activeTab === 'roles' && isSuperAdmin && <RolesTab />}
                 </div>
             </div>
         </>

@@ -33,7 +33,7 @@ const ProductReviewModal = ({ isOpen, onClose, productId, productName, productIm
         try {
             setIsSubmitting(true);
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/reviews/review-product`,
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/review/review-product`,
                 {
                     email: session.user.email,
                     productId: productId,

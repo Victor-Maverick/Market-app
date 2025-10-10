@@ -47,7 +47,7 @@ const ProductDetailHeader = () => {
         if (roles.includes('VENDOR') && roles.includes('BUYER')) {
             router.push('/vendor/dashboard');
         }
-        else if (roles.includes('ADMIN')) {
+        else if (roles.includes('ADMIN') || roles.includes('SUPER_ADMIN')) {
             router.push('/admin/dashboard/main');
         }
         else if (roles.includes('LOGISTICS')) {

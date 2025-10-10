@@ -53,8 +53,8 @@ const VendorChatsPage = () => {
         try {
             setLoading(true);
 
-            // Don't fetch conversations for ADMIN users
-            if (session?.user?.roles?.includes('ADMIN')) {
+            // Don't fetch conversations for ADMIN and SUPER_ADMIN users
+            if (session?.user?.roles?.includes('ADMIN') || session?.user?.roles?.includes('SUPER_ADMIN')) {
                 setLoading(false);
                 return;
             }

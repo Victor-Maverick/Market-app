@@ -184,7 +184,7 @@ const Login = () => {
                     smartNavigate(preAuthUrl, 'Redirecting you...');
                 } else if (roles.includes('VENDOR')) {
                     smartNavigate('/vendor/dashboard');
-                } else if (roles.includes('ADMIN')) {
+                } else if (roles.includes('ADMIN') || roles.includes('SUPER_ADMIN')) {
                     smartNavigate('/admin/dashboard/main');
                 } else if (roles.includes('LOGISTICS')) {
                     smartNavigate('/logistics/dashboard/main');
