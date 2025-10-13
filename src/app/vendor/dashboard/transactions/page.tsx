@@ -86,7 +86,9 @@ const ProductTableRow = ({ order, isLast }: { order: OrderResponse; isLast: bool
     const firstItem = order.items[0];
 
     return (
-        <div className={`flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
+        <>
+            {/* Desktop Row */}
+            <div className={`hidden lg:flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
             <div className="flex items-center w-[35%] pr-[24px] gap-3">
                 <div className="bg-[#f9f9f9] h-full w-[70px] overflow-hidden mt-[2px]">
                     <Image
@@ -120,6 +122,38 @@ const ProductTableRow = ({ order, isLast }: { order: OrderResponse; isLast: bool
                 </p>
             </div>
         </div>
+        
+        {/* Mobile Row */}
+        <div className={`lg:hidden border-[1px] border-[#EAECF0] rounded-[12px] p-4 mb-3 bg-white`}>
+            <div className="flex items-start gap-3 mb-3">
+                <div className="bg-[#f9f9f9] h-[60px] w-[60px] flex items-center justify-center overflow-hidden rounded-[8px] flex-shrink-0">
+                    <Image
+                        src={firstItem.productImage || ''}
+                        alt={firstItem.productName}
+                        width={60}
+                        height={60}
+                        className="object-cover w-full h-full"
+                    />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-medium text-[#101828] truncate">{firstItem.productName}</p>
+                    {order.items.length > 1 && (
+                        <p className="text-[12px] text-[#667085] mb-2">+{order.items.length - 1} more items</p>
+                    )}
+                    <p className="text-[12px] text-[#667085]">{formattedDate} • {formattedTime}</p>
+                </div>
+                <div className="flex-shrink-0 text-right">
+                    <p className="text-[14px] font-medium text-[#101828]">NGN {order.totalAmount.toLocaleString()}</p>
+                </div>
+            </div>
+            
+            <div className="pt-2 border-t border-[#EAECF0]">
+                <p className="text-[12px] text-[#667085] capitalize">
+                    {order.deliveryInfo.method}
+                </p>
+            </div>
+        </div>
+        </>
     );
 };
 
@@ -137,7 +171,9 @@ const PayoutTableRow = ({ payout, isLast }: { payout: PayoutResponse; isLast: bo
     });
 
     return (
-        <div className={`flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
+        <>
+            {/* Desktop Row */}
+            <div className={`hidden lg:flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
             <div className="flex items-center w-[35%] px-[24px] gap-3">
                 <div className="flex flex-col">
                     <p className="text-[14px] font-medium text-[#101828]">Payout #{payout.id}</p>
@@ -165,6 +201,29 @@ const PayoutTableRow = ({ payout, isLast }: { payout: PayoutResponse; isLast: bo
                 </p>
             </div>
         </div>
+        
+        {/* Mobile Row */}
+        <div className={`lg:hidden border-[1px] border-[#EAECF0] rounded-[12px] p-4 mb-3 bg-white`}>
+            <div className="flex justify-between items-start mb-3">
+                <div className="flex-1">
+                    <p className="text-[14px] font-medium text-[#101828]">Payout #{payout.id}</p>
+                    <p className="text-[12px] text-[#667085]">{formattedRequestDate} • {formattedRequestTime}</p>
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                    <div className={`px-2 py-1 rounded-[8px] ${
+                        payout.isPaid
+                            ? 'bg-[#ECFDF3] text-[#027A48]'
+                            : 'bg-[#FFFAEB] text-[#B54708]'
+                    }`}>
+                        <p className="text-[12px] font-medium capitalize">{payout.isPaid ? 'paid' : 'pending'}</p>
+                    </div>
+                    <p className="text-[14px] font-medium text-[#101828]">
+                        N {payout.paidAmount.toLocaleString()}.00
+                    </p>
+                </div>
+            </div>
+        </div>
+        </>
     );
 };
 
@@ -322,12 +381,12 @@ const Transactions = () => {
         <>
             <DashboardHeader />
             <DashboardOptions />
-            <div className="flex flex-col py-[30px] px-25">
+            <div className="flex flex-col py-[20px] sm:py-[30px] px-4 sm:px-6 lg:px-25">
                 <div className="flex flex-col gap-[12px]">
                     <p className="text-[#022B23] text-[16px] font-medium">Transaction summary</p>
                     <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-[20px]">
-                            <div className="flex hover:shadow-xl border-[0.5px] bg-[#FFFAEB] h-[100px] flex-col gap-[12px] p-[12px] border-[#F99007] rounded-[14px] w-[246px]">
+                        <div className="flex flex-col sm:flex-row items-center gap-[12px] sm:gap-[20px] overflow-x-auto">
+                            <div className="flex hover:shadow-xl border-[0.5px] bg-[#FFFAEB] h-[100px] flex-col gap-[12px] p-[12px] border-[#F99007] rounded-[14px] w-full sm:w-[246px] min-w-[200px]">
                                 <div className="flex items-center text-[#022B23] text-[12px] font-medium gap-[8px]">
                                     <Image src={biArrows} alt="Total amount earned" />
                                     <p>Total amount earned</p>
@@ -341,7 +400,7 @@ const Transactions = () => {
                                 </div>
                             </div>
 
-                            <div className="flex hover:shadow-xl border-[0.5px] flex-col gap-[12px] p-[12px] border-[#E4E4E7] rounded-[14px] h-[110px] w-[324px]">
+                            <div className="flex hover:shadow-xl border-[0.5px] flex-col gap-[12px] p-[12px] border-[#E4E4E7] rounded-[14px] h-[110px] w-full sm:w-[324px] min-w-[250px]">
                                 <div className="flex justify-between">
                                     <div className="flex items-center text-[#022B23] text-[12px] font-medium gap-[8px]">
                                         <Image src={exportImg} alt="Available for payout" />
@@ -365,7 +424,7 @@ const Transactions = () => {
                                 </div>
                             </div>
 
-                            <div className="flex hover:shadow-xl border-[0.5px] flex-col gap-[12px] p-[12px] border-[#E4E4E7] rounded-[14px] h-[100px] w-[246px]">
+                            <div className="flex hover:shadow-xl border-[0.5px] flex-col gap-[12px] p-[12px] border-[#E4E4E7] rounded-[14px] h-[100px] w-full sm:w-[246px] min-w-[200px]">
                                 <div className="flex items-center text-[#71717A] text-[12px] font-medium gap-[8px]">
                                     <Image src={archiveImg} alt="Completed deliveries" />
                                     <p>Completed deliveries</p>
@@ -383,7 +442,7 @@ const Transactions = () => {
                 </div>
             </div>
 
-            <div className="mx-[100px] border-[1px] border-[#ededed] rounded-[24px] pt-6 mb-10">
+            <div className="mx-4 sm:mx-6 lg:mx-[100px] border-[1px] border-[#ededed] rounded-[24px] pt-6 mb-10">
                 <div className="flex items-center text-[#8C8C8C] text-[10px] w-[174px] mx-6 h-[26px] border-[0.5px] border-[#ededed] rounded-[8px] relative mb-4">
                     <div
                         className={`flex items-center justify-center w-[115px] h-full z-10 cursor-pointer ${
@@ -435,7 +494,8 @@ const Transactions = () => {
                                 />
                             </div>
 
-                            <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                            {/* Desktop Table Header */}
+                            <div className="hidden lg:flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
                                 <div className="flex items-center px-[24px] w-[35%] py-[12px] gap-[4px]">
                                     <p className="text-[#667085] font-medium text-[12px]">Products</p>
                                     <Image src={arrowDown} alt="Sort" width={12} height={12} />
@@ -449,6 +509,11 @@ const Transactions = () => {
                                 <div className="flex items-center px-[24px] w-[20%] py-[12px]">
                                     <p className="text-[#667085] font-medium text-[12px]">Delivery method</p>
                                 </div>
+                            </div>
+                            
+                            {/* Mobile Header */}
+                            <div className="lg:hidden px-4 py-3 bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                                <p className="text-[#667085] font-medium text-[12px]">Transaction History</p>
                             </div>
 
                             <div className="flex flex-col">
@@ -480,7 +545,8 @@ const Transactions = () => {
                                 </div>
                             </div>
 
-                            <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                            {/* Desktop Table Header */}
+                            <div className="hidden lg:flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
                                 <div className="flex items-center px-[24px] w-[35%] py-[12px] gap-[4px]">
                                     <p className="text-[#667085] font-medium text-[12px]">Payout</p>
                                 </div>
@@ -493,6 +559,11 @@ const Transactions = () => {
                                 <div className="flex items-center px-[24px] w-[20%] py-[12px]">
                                     <p className="text-[#667085] font-medium text-[12px]">Amount</p>
                                 </div>
+                            </div>
+                            
+                            {/* Mobile Header */}
+                            <div className="lg:hidden px-4 py-3 bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                                <p className="text-[#667085] font-medium text-[12px]">Payout History</p>
                             </div>
 
                             <div className="flex flex-col">

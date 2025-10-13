@@ -101,7 +101,23 @@ const ProductTableRow = ({
             </div>
 
             <div className="flex items-center w-[15%] px-[14px]">
-                <p className="text-[12px] text-[#667085]">{product.rating || 'No rating'}</p>
+                {product.rating ? (
+                    <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                className={`text-sm ${
+                                    star <= product.rating! ? 'text-yellow-500' : 'text-gray-300'
+                                }`}
+                            >
+                                ★
+                            </span>
+                        ))}
+                        <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+                    </div>
+                ) : (
+                    <p className="text-[12px] text-[#667085]">No rating</p>
+                )}
             </div>
 
             <div className="flex items-center w-[5%] relative">

@@ -9,6 +9,7 @@ import {ToastContainer, toast} from "react-toastify";
 import { SkeletonLoader } from "@/components/LoadingSkeletons";
 import ProductReviewModal from "@/components/ProductReviewModal";
 import { useSession } from "next-auth/react";
+import { validateSessionAndRedirect } from "@/utils/sessionUtils";
 
 interface OrderItemDto {
     id: number;
@@ -57,13 +58,12 @@ const OrderDetails = () => {
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
-                // Get user email from localStorage
-                const userEmail = localStorage.getItem('userEmail');
-                if (!userEmail) {
-                    toast.error('Please log in to view order details');
-                    router.push('/login');
+                // Validate session and get user email
+                if (!validateSessionAndRedirect(session, router, 'view order details')) {
                     return;
                 }
+
+                const userEmail = session!.user.email;
 
                 // Fetch all user orders and filter by order number
                 const response = await axios.get(
@@ -88,10 +88,10 @@ const OrderDetails = () => {
             }
         };
 
-        if (orderNumber) {
+        if (orderNumber && session !== undefined) {
             fetchOrderDetails();
         }
-    }, [orderNumber, router]);
+    }, [orderNumber, router, session]);
 
     const handleOpenDisputeModal = (item: OrderItemDto) => {
         setDisputeItem(item);
@@ -130,11 +130,11 @@ const OrderDetails = () => {
         }
 
         try {
-            const userEmail = localStorage.getItem('userEmail');
-            if (!userEmail) {
-                router.push('/login');
+            if (!validateSessionAndRedirect(session, router, 'dispute an item')) {
                 return;
             }
+
+            const userEmail = session!.user.email;
 
             // First call decline-item endpoint
             await axios.put(

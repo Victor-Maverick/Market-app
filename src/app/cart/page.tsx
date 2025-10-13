@@ -21,13 +21,14 @@ import arrowRight from '@/../public/assets/images/green arrow.png';
 import checkIcon from '@/../public/assets/images/green tick.png';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { validateSessionAndRedirect } from '@/utils/sessionUtils';
 
 // Import Paystack InlineJS (Ensure the script is loaded)
 import Script from 'next/script';
 import Paystack from '@paystack/inline-js';
 
 
-const DELIVERY_FEE = 1000;
+const DELIVERY_FEE = 0;
 
 interface PaymentData {
     authorizationUrl: string;
@@ -174,17 +175,17 @@ const Cart = () => {
                     throw new Error('Payment amount does not match order total');
                 }
 
-                if (!session?.user?.email) {
-                    throw new Error('User email not found in session. Please log in again.');
+                if (!validateSessionAndRedirect(session, router, 'complete your order')) {
+                    throw new Error('User session expired. Please log in again.');
                 }
 
                 const checkoutResponse = await apiCheckout({
-                    buyerEmail: session.user.email,
+                    buyerEmail: session?.user?.email || '',
                     deliveryMethod: selectedDeliveryOption,
                     address: selectedDeliveryOption === 'pickup' ? 'Shop Pickup' : selectedAddress,
                     reference,
                     phoneNumber: contactPhone,
-                    deliveryFee: DELIVERY_FEE,
+                    deliveryFee: 0,
                 });
 
                 const orderDetails: OrderDetails = {
@@ -304,15 +305,15 @@ const Cart = () => {
             });
         }
 
-        if (!session?.user?.email) {
-            throw new Error('User email not available');
+        if (!validateSessionAndRedirect(session, router, 'initialize payment')) {
+            throw new Error('User session expired. Please log in again.');
         }
 
         try {
-            const totalAmount = getTotalPrice() + DELIVERY_FEE - discount;
+            const totalAmount = getTotalPrice() - discount;
 
             const requestData = {
-                email: session.user.email,
+                email: session?.user?.email || '',
                 amount: totalAmount, // Paystack expects amount in kobo
                 currency: 'NGN',
                 callbackUrl: `${window.location.origin}/cart`,
@@ -372,7 +373,7 @@ const Cart = () => {
                 throw new Error(phoneError || 'Please enter a valid phone number');
             }
 
-            const totalAmount = getTotalPrice() + DELIVERY_FEE - discount;
+            const totalAmount = getTotalPrice() - discount;
             storeTotalAmount(totalAmount);
 
             const paymentData = await initializePayment();
@@ -728,7 +729,7 @@ const Cart = () => {
                                 <div className="flex justify-between items-center">
                                     <p className="text-[#022B23] text-[18px] font-medium">Total</p>
                                     <p className="text-[18px] font-bold text-[#1E1E1E]">
-                                        ₦{(getTotalPrice() + DELIVERY_FEE - discount).toLocaleString()}.00
+                                        ₦{(getTotalPrice() - discount).toLocaleString()}.00
                                     </p>
                                 </div>
                             </div>

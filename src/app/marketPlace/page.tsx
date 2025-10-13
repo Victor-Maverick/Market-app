@@ -951,9 +951,7 @@ const MarketPlace = () => {
                             <PromotedSection promotedProducts={promotedProducts} />
                         )}
                         <ProductGrid apiProducts={apiProducts} />
-                        <div className="flex-col px-4 sm:px-6 lg:px-25">
-                            <FlashSale countdown={countdown} apiProducts={apiProducts} />
-                        </div>
+
                         <StoreSection />
                     </>
                 )}

@@ -349,8 +349,8 @@ const DisputeDetailsModal = ({
             />
             <div className="absolute inset-0" onClick={onClose} />
 
-            <div className="relative z-10 bg-white w-[1100px] mx-4 px-[60px] py-[40px] shadow-lg">
-                <div className="flex justify-between border-b-[0.5px] border-[#ededed] pb-[14px] items-start">
+            <div className="relative z-10 bg-white w-full max-w-[1100px] mx-4 px-4 sm:px-8 lg:px-[60px] py-6 sm:py-8 lg:py-[40px] shadow-lg rounded-lg max-h-[90vh] overflow-y-auto">
+                <div className="flex flex-col sm:flex-row sm:justify-between border-b-[0.5px] border-[#ededed] pb-[14px] items-start gap-3 sm:gap-0">
                     <div className="flex flex-col">
                         <p className="text-[16px] text-[#022B23] font-medium">Dispute request</p>
                         <p className="text-[14px] text-[#707070] font-medium">View and process disputes on products with customers</p>
@@ -376,18 +376,18 @@ const DisputeDetailsModal = ({
                                 <p className="text-[#707070] font-medium text-[14px] leading-tight">From: <span className="text-[#000000]">{dispute.orderItem.buyerName}</span></p>
                             </div>
                         </div>
-                        <div className="w-[100%] flex items-center justify-between h-[72px] border-[1px] border-[#ededed] rounded-[14px]">
-                            <div className="flex items-center h-full gap-[10px]">
-                                <div className="h-full bg-[#f9f9f9] rounded-bl-[14px] rounded-tl-[14px] w-[70px] border-l-[0.5px] border-[#ededed]">
-                                    <Image src={dispute.orderItem.productImage} alt={'image'} width={70} height={70} className="h-full w-[70px] rounded-bl-[14px] rounded-tl-[14px]" />
+                        <div className="w-full flex items-center justify-between h-[72px] border-[1px] border-[#ededed] rounded-[14px]">
+                            <div className="flex items-center h-full gap-[10px] flex-1 min-w-0">
+                                <div className="h-full bg-[#f9f9f9] rounded-bl-[14px] rounded-tl-[14px] w-[70px] flex-shrink-0 border-l-[0.5px] border-[#ededed]">
+                                    <Image src={dispute.orderItem.productImage} alt={'image'} width={70} height={70} className="h-full w-[70px] rounded-bl-[14px] rounded-tl-[14px] object-cover" />
                                 </div>
-                                <div className="flex flex-col leading-tight">
-                                    <p className="text-[#101828] text-[14px] font-medium">
+                                <div className="flex flex-col leading-tight min-w-0 flex-1">
+                                    <p className="text-[#101828] text-[14px] font-medium truncate">
                                         {dispute.orderItem.productName}
                                     </p>
                                 </div>
                             </div>
-                            <p className="text-[#667085] text-[14px] mr-[10px]">Quantity: 1</p>
+                            <p className="text-[#667085] text-[12px] sm:text-[14px] mr-[10px] flex-shrink-0">Quantity: 1</p>
                         </div>
                         <div className="h-[230px] p-[20px] rounded-[24px] bg-[#FFFBF6] w-[100%] border-[#FF9500] flex flex-col gap-[12px] border">
                             <div className="flex flex-col leading-tight">
@@ -399,7 +399,7 @@ const DisputeDetailsModal = ({
                             </div>
                         </div>
                     </div>
-                    <div className="w-[50%] flex justify-between flex-col gap-[20px] pl-[15px] pt-[20px] pb-[5px]">
+                    <div className="w-full lg:w-[50%] flex justify-between flex-col gap-[20px] lg:pl-[15px] pt-[20px] pb-[5px] lg:border-t-0 border-t-[0.5px] border-[#ededed] lg:mt-0 mt-6">
                         <p className="text-[#022B23] font-semibold text-[16px]">Product details</p>
                         <div className="flex flex-col gap-[8px] pb-[25px] border-b-[0.5px] border-[#ededed]">
                             <div className="flex justify-between">
@@ -541,8 +541,8 @@ const OrderDetailsModal = ({
             />
             <div className="absolute inset-0" onClick={onClose} />
 
-            <div className="relative z-10 bg-white w-[1100px] mx-4 px-[60px] py-[40px] shadow-lg">
-                <div className="flex justify-between border-b-[0.5px] border-[#ededed] pb-[14px] items-start">
+            <div className="relative z-10 bg-white w-full max-w-[1100px] mx-4 px-4 sm:px-8 lg:px-[60px] py-6 sm:py-8 lg:py-[40px] shadow-lg rounded-lg max-h-[90vh] overflow-y-auto">
+                <div className="flex flex-col sm:flex-row sm:justify-between border-b-[0.5px] border-[#ededed] pb-[14px] items-start gap-3 sm:gap-0">
                     <div className="flex flex-col">
                         <p className="text-[16px] text-[#022B23] font-medium">Order Details</p>
                         <p className="text-[14px] text-[#707070] font-medium">View and manage order details</p>
@@ -573,21 +573,21 @@ const OrderDetailsModal = ({
                             </div>
                         </div>
                         {order.items.map((item, index) => (
-                            <div key={index} className="w-[100%] flex items-center justify-between h-[72px] border-[1px] border-[#ededed] rounded-[14px]">
-                                <div className="flex items-center h-full gap-[10px]">
-                                    <div className="h-full bg-[#f9f9f9] rounded-bl-[14px] rounded-tl-[14px] w-[70px] border-l-[0.5px] border-[#ededed]">
-                                        <Image src={item.productImage} alt={'image'} width={70} height={70} className="h-full w-[70px] rounded-bl-[14px] rounded-tl-[14px]" />
+                            <div key={index} className="w-full flex items-center justify-between h-[72px] border-[1px] border-[#ededed] rounded-[14px]">
+                                <div className="flex items-center h-full gap-[10px] flex-1 min-w-0">
+                                    <div className="h-full bg-[#f9f9f9] rounded-bl-[14px] rounded-tl-[14px] w-[70px] flex-shrink-0 border-l-[0.5px] border-[#ededed]">
+                                        <Image src={item.productImage} alt={'image'} width={70} height={70} className="h-full w-[70px] rounded-bl-[14px] rounded-tl-[14px] object-cover" />
                                     </div>
-                                    <div className="flex flex-col leading-tight">
-                                        <p className="text-[#101828] text-[14px] font-medium">{item.productName}</p>
-                                        <p className="text-[#667085] text-[12px]">{item.description}</p>
+                                    <div className="flex flex-col leading-tight min-w-0 flex-1">
+                                        <p className="text-[#101828] text-[14px] font-medium truncate">{item.productName}</p>
+                                        <p className="text-[#667085] text-[12px] truncate">{item.description}</p>
                                     </div>
                                 </div>
-                                <p className="text-[#667085] text-[14px] mr-[10px]">Quantity: {item.quantity}</p>
+                                <p className="text-[#667085] text-[12px] sm:text-[14px] mr-[10px] flex-shrink-0">Quantity: {item.quantity}</p>
                             </div>
                         ))}
                     </div>
-                    <div className="w-[50%] flex justify-between flex-col gap-[20px] pl-[15px] pt-[20px] pb-[5px]">
+                    <div className="w-full lg:w-[50%] flex justify-between flex-col gap-[20px] lg:pl-[15px] pt-[20px] pb-[5px] lg:border-t-0 border-t-[0.5px] border-[#ededed] lg:mt-0 mt-6">
                         <p className="text-[#022B23] font-semibold text-[16px]">Order Summary</p>
                         <div className="flex flex-col gap-[8px] pb-[25px] border-b-[0.5px] border-[#ededed]">
                             <div className="flex justify-between">
@@ -833,7 +833,9 @@ const ProductTableRow = ({
     const firstItem = order.items[0];
 
     return (
-        <div className={`flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
+        <>
+            {/* Desktop Row */}
+            <div className={`hidden lg:flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
             <div className="flex items-center w-[30%] pr-[24px] gap-3">
                 <div className="bg-[#f9f9f9] h-[70px] w-[70px] flex items-center justify-center overflow-hidden">
                     {firstItem.productImage && (
@@ -903,6 +905,74 @@ const ProductTableRow = ({
                 </ProductActionsDropdown>
             </div>
         </div>
+        
+        {/* Mobile Row */}
+        <div className={`lg:hidden border-[1px] border-[#EAECF0] rounded-[12px] p-4 mb-3 bg-white`}>
+            <div className="flex items-start gap-3 mb-3">
+                <div className="bg-[#f9f9f9] h-[60px] w-[60px] flex items-center justify-center overflow-hidden rounded-[8px] flex-shrink-0">
+                    {firstItem.productImage && (
+                        <Image
+                            src={firstItem.productImage}
+                            alt={firstItem.productName}
+                            width={60}
+                            height={60}
+                            className="object-cover w-full h-full"
+                        />
+                    )}
+                </div>
+                <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-medium text-[#101828] truncate">{firstItem.productName}</p>
+                    <p className="text-[12px] text-[#667085] mb-2">#{order.orderNumber}</p>
+                    {order.items.length > 1 && (
+                        <p className="text-[12px] text-[#667085]">+{order.items.length - 1} more items</p>
+                    )}
+                </div>
+                <div className="flex-shrink-0">
+                    <ProductActionsDropdown
+                        orderId={order.id}
+                        orderNumber={order.orderNumber}
+                        orderStatus={order.status}
+                        items={order.items}
+                        onProcessOrder={onProcessOrder}
+                        onDeclineOrder={onDeclineOrder}
+                        onShipOrder={onShipOrder}
+                        onViewOrder={onViewOrder}
+                    >
+                        <div className="flex flex-col gap-[3px] items-center justify-center p-2">
+                            <div className="w-[3px] h-[3px] bg-[#98A2B3] rounded-full"></div>
+                            <div className="w-[3px] h-[3px] bg-[#98A2B3] rounded-full"></div>
+                            <div className="w-[3px] h-[3px] bg-[#98A2B3] rounded-full"></div>
+                        </div>
+                    </ProductActionsDropdown>
+                </div>
+            </div>
+            
+            <div className="flex justify-between items-center text-[12px]">
+                <div className="flex items-center gap-4">
+                    <span className={`px-2 py-1 text-xs rounded-full ${order.status === OrderStatus.DELIVERED ? 'bg-green-100 text-green-800' :
+                        order.status === OrderStatus.SHIPPED ? 'bg-green-100 text-green-800' :
+                            order.status === OrderStatus.PROCESSING ? 'bg-yellow-100 text-yellow-800' :
+                                order.status === OrderStatus.DECLINED ? 'bg-red-100 text-red-800' :
+                                    'bg-gray-100 text-gray-800'
+                        }`}>
+                        {order.status}
+                    </span>
+                    <span className="text-[#667085]">
+                        {order.items.reduce((sum, item) => sum + item.quantity, 0)} items
+                    </span>
+                </div>
+                <p className="text-[#101828] font-medium">
+                    ₦{order.items.reduce((sum, item) => sum + item.totalPrice, 0).toLocaleString()}
+                </p>
+            </div>
+            
+            <div className="mt-2 pt-2 border-t border-[#EAECF0]">
+                <p className="text-[12px] text-[#667085] capitalize">
+                    {order.deliveryInfo?.method || 'Delivery method not specified'}
+                </p>
+            </div>
+        </div>
+        </>
     );
 };
 
@@ -1149,7 +1219,8 @@ const PendingOrders = ({ orders: initialOrders, loading }: PendingOrdersProps) =
                         </div>
                     </div>
 
-                    <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                    {/* Desktop Table Header */}
+                    <div className="hidden lg:flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
                         <div className="flex items-center px-[24px] w-[30%] py-[12px] gap-[4px]">
                             <p className="text-[#667085] font-medium text-[12px]">Products</p>
                             <Image src={arrowDown} alt="Sort" width={12} height={12} />
@@ -1170,6 +1241,20 @@ const PendingOrders = ({ orders: initialOrders, loading }: PendingOrdersProps) =
                             <p className="text-[#667085] font-medium text-[12px]">Items</p>
                         </div>
                         <div className="w-[2%]"></div>
+                    </div>
+                    
+                    {/* Mobile Table Header */}
+                    <div className="flex lg:hidden h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                        <div className="flex items-center px-[12px] w-[40%] py-[12px] gap-[4px]">
+                            <p className="text-[#667085] font-medium text-[12px]">Order</p>
+                        </div>
+                        <div className="flex items-center px-[12px] w-[25%] py-[12px]">
+                            <p className="text-[#667085] font-medium text-[12px]">Status</p>
+                        </div>
+                        <div className="flex items-center px-[12px] w-[25%] py-[12px]">
+                            <p className="text-[#667085] font-medium text-[12px]">Amount</p>
+                        </div>
+                        <div className="w-[10%]"></div>
                     </div>
 
                     <div className="flex flex-col">
