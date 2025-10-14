@@ -188,22 +188,22 @@ const BankInfo = () => {
                 image={dashSlideImg}
                 textColor={'#05966F'}
             />
-            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-25 border-[#ededed] flex items-center">
+            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-4 sm:px-6 lg:px-25 border-[#ededed] flex items-center">
                 <Image src={arrow} alt={'arrow image'} className="cursor-pointer" onClick={handleBack}/>
-                <p className="text-[14px] font-normal">
+                <p className="text-[12px] sm:text-[14px] font-normal">
                     <span className="cursor-pointer" onClick={returnToShopInfo}>Shop information //</span>
                     <span className="cursor-pointer" onClick={handleBack}>Vendor information //</span>
                     <span className="cursor-pointer font-medium">Bank details</span>
                 </p>
             </div>
-            <div className="flex ml-[366px] w-auto mt-16 gap-25">
-                <div className="flex flex-col w-[268px] h-[67px] gap-[10px]">
-                    <p className="text-[#022B23] text-[16px] font-medium">Bank details</p>
+            <div className="flex flex-col lg:flex-row lg:ml-[366px] w-auto mt-8 lg:mt-16 gap-6 lg:gap-25 px-4 sm:px-6 lg:px-0">
+                <div className="flex flex-col w-full lg:w-[268px] gap-[10px] mb-6 lg:mb-0">
+                    <p className="text-[#022B23] text-[16px] sm:text-[18px] font-medium">Bank details</p>
                     <p className="text-[#707070] font-medium text-[14px]">
                         Provide your bank account details for receiving payments
                     </p>
                 </div>
-                <div className="flex flex-col w-[400px] h-auto gap-[38px]">
+                <div className="flex flex-col w-full lg:w-[400px] max-w-md lg:max-w-none mx-auto lg:mx-0 h-auto gap-[20px] sm:gap-[38px]">
                     {isLoading ? (
                         <div className="flex justify-center items-center py-8">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#022B23]"></div>
@@ -226,13 +226,13 @@ const BankInfo = () => {
                                 />
                             </div>
                             <div
-                                className={`flex mb-[20px] gap-[9px] justify-center items-center bg-[#022B23] rounded-[12px] h-[52px] ${
+                                className={`flex mt-[20px] sm:mt-[30px] mb-[20px] gap-[6px] sm:gap-[9px] justify-center items-center bg-[#022B23] rounded-[10px] sm:rounded-[12px] h-[48px] sm:h-[52px] ${
                                     formValid ? "cursor-pointer hover:bg-[#033a30]" : "opacity-70 cursor-not-allowed"
-                                } transition-colors`}
+                                } transition-colors w-full`}
                                 onClick={formValid ? handleContinue : undefined}
                             >
-                                <p className="text-[#C6EB5F] font-semibold text-[14px]">Complete KYC & setup shop</p>
-                                <Image src={limeArrow} alt="Continue arrow" width={18} height={18} />
+                                <p className="text-[#C6EB5F] font-semibold text-[12px] sm:text-[14px] text-center">Complete KYC & setup shop</p>
+                                <Image src={limeArrow} alt="Continue arrow" width={16} height={16} className="sm:w-[18px] sm:h-[18px]" />
                             </div>
                         </>
                     )}

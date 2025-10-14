@@ -489,8 +489,8 @@ const ReviewsContent = () => {
         <>
             <DashboardHeader />
             <DashboardOptions />
-            <div className="flex flex-col py-[30px] px-25">
-                <div className="w-[359px] h-[52px] gap-[24px] flex items-end">
+            <div className="flex flex-col py-[20px] sm:py-[30px] px-4 sm:px-6 lg:px-25">
+                <div className="w-full max-w-[359px] h-auto sm:h-[52px] gap-[16px] sm:gap-[24px] flex flex-col sm:flex-row items-start sm:items-end">
                     <button
                         onClick={() => handleTabChange('reviews')}
                         className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${

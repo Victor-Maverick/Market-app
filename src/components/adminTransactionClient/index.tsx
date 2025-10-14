@@ -5,6 +5,7 @@ import { PaymentTransactionResponse, PayoutResponse } from "../../services/payme
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import CSVExportButton from '@/components/CSVExportButton';
 
 // Transaction Details Modal
 const TransactionDetailsModal = ({ transaction, onClose, onVerify }: {
@@ -776,27 +777,49 @@ const AdminTransactionClient = () => {
                 <p>View all transactions and payouts</p>
             </div>
 
-            <div className="flex border-b border-[#ededed] px-[20px]">
-                <button
-                    onClick={() => handleTabChange('transactions')}
-                    className={`px-4 py-3 text-sm font-medium border-b-2 ${
-                        activeTab === 'transactions'
-                            ? 'border-[#022B23] text-[#022B23]'
-                            : 'border-transparent text-gray-500 hover:text-gray-700'
-                    }`}
-                >
-                    Transactions
-                </button>
-                <button
-                    onClick={() => handleTabChange('pay-outs')}
-                    className={`px-4 py-3 text-sm font-medium border-b-2 ${
-                        activeTab === 'pay-outs'
-                            ? 'border-[#022B23] text-[#022B23]'
-                            : 'border-transparent text-gray-500 hover:text-gray-700'
-                    }`}
-                >
-                    Pay-outs
-                </button>
+            <div className="flex justify-between items-center border-b border-[#ededed] px-[20px]">
+                <div className="flex">
+                    <button
+                        onClick={() => handleTabChange('transactions')}
+                        className={`px-4 py-3 text-sm font-medium border-b-2 ${
+                            activeTab === 'transactions'
+                                ? 'border-[#022B23] text-[#022B23]'
+                                : 'border-transparent text-gray-500 hover:text-gray-700'
+                        }`}
+                    >
+                        Transactions
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('pay-outs')}
+                        className={`px-4 py-3 text-sm font-medium border-b-2 ${
+                            activeTab === 'pay-outs'
+                                ? 'border-[#022B23] text-[#022B23]'
+                                : 'border-transparent text-gray-500 hover:text-gray-700'
+                        }`}
+                    >
+                        Pay-outs
+                    </button>
+                </div>
+                <div className="py-3">
+                    {activeTab === 'transactions' && (
+                        <CSVExportButton
+                            data={transactions}
+                            filename="admin_transactions"
+                            headers={['email', 'amount', 'status', 'paymentType', 'createdAt', 'reference']}
+                            excludeFields={['id', 'internalId']}
+                            className="text-xs px-2 py-1"
+                        />
+                    )}
+                    {activeTab === 'pay-outs' && (
+                        <CSVExportButton
+                            data={payouts}
+                            filename="admin_payouts"
+                            headers={['vendorName', 'paidAmount', 'isPaid', 'requestedAt', 'paidAt']}
+                            excludeFields={['id']}
+                            className="text-xs px-2 py-1"
+                        />
+                    )}
+                </div>
             </div>
 
             <div className="flex-1 p-[20px]">

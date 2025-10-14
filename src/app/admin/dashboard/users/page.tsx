@@ -9,6 +9,7 @@ import axios from 'axios';
 import { UsersTableSkeleton, StatsCardsLoadingSkeleton } from "@/components/LoadingSkeletons";
 import { userService } from "@/services/userService";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import CSVExportButton from "@/components/CSVExportButton";
 
 interface User {
     id: number;
@@ -254,7 +255,12 @@ const Users = () => {
                             <p className="text-[#101828] font-medium text-[16px] sm:text-[18px]">Users ({filteredUsers.length})</p>
                             <p className="text-[#667085] text-[12px] sm:text-[14px]">View and manage users here</p>
                         </div>
-
+                        <CSVExportButton
+                            data={users}
+                            filename="admin_users"
+                            headers={['firstName', 'lastName', 'email', 'phone', 'createdAt', 'active']}
+                            excludeFields={['id', 'roles']}
+                        />
                     </div>
 
                     <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">

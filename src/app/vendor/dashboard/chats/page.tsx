@@ -293,32 +293,40 @@ const VendorChatsPage = () => {
             <DashboardHeader />
             <DashboardOptions />
 
-            {/* Chat Interface with 100px margin */}
-            <div className="mx-25 my-6">
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-[calc(100vh-200px)] flex">
+            {/* Chat Interface with responsive margin */}
+            <div className="mx-4 sm:mx-6 lg:mx-25 my-4 sm:my-6">
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-[calc(100vh-200px)] flex flex-col lg:flex-row">
                     {/* Left Panel - Conversations List */}
-                    <div className={`${selectedConversation ? 'w-80' : 'w-full max-w-sm'} bg-white border-r border-gray-200 flex flex-col rounded-l-lg`}>
+                    <div className={`${selectedConversation ? 'hidden lg:flex lg:w-80' : 'flex w-full'} ${!selectedConversation ? 'max-w-full lg:max-w-sm' : ''} bg-white border-r-0 lg:border-r border-gray-200 flex-col rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none`}>
                         {/* Chat Filters */}
-                        <div className="px-4 py-3 border-b border-gray-200">
+                        <div className="px-3 sm:px-4 py-3 border-b border-gray-200">
                             <div className="flex gap-4 text-sm">
                                 <button className="text-[#022B23] font-medium border-b-2 border-[#022B23] pb-1">All chats</button>
                             </div>
                         </div>
 
                         {/* Messages Header */}
-                        <div className="px-4 py-3 border-b border-gray-200">
-                            <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
+                        <div className="px-3 sm:px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+                            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Messages</h2>
+                            {selectedConversation && (
+                                <button 
+                                    onClick={() => setSelectedConversation(null)}
+                                    className="lg:hidden text-gray-500 hover:text-gray-700"
+                                >
+                                    ← Back
+                                </button>
+                            )}
                         </div>
 
                         {/* Conversations List */}
                         <div className="flex-1 overflow-y-auto">
                             {filteredConversations.length === 0 ? (
-                                <div className="text-center py-12 px-4">
-                                    <MessageCircle size={48} className="mx-auto text-gray-400 mb-4" />
-                                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                <div className="text-center py-8 sm:py-12 px-3 sm:px-4">
+                                    <MessageCircle size={40} className="sm:w-12 sm:h-12 mx-auto text-gray-400 mb-4" />
+                                    <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
                                         {searchTerm ? 'No conversations found' : 'No customer chats yet'}
                                     </h3>
-                                    <p className="text-gray-600 text-sm">
+                                    <p className="text-gray-600 text-xs sm:text-sm">
                                         {searchTerm
                                             ? 'Try adjusting your search terms'
                                             : 'When customers message you, they\'ll appear here'
@@ -330,21 +338,21 @@ const VendorChatsPage = () => {
                                     {filteredConversations.map((conversation) => (
                                         <div
                                             key={conversation.id}
-                                            className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${
+                                            className={`px-3 sm:px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${
                                                 selectedConversation?.id === conversation.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
                                             }`}
                                             onClick={() => openChat(conversation)}
                                         >
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center gap-2 sm:gap-3">
                                                 {/* Profile Avatar */}
                                                 <div className="relative">
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-red-400 flex items-center justify-center">
-                                                        <span className="text-white text-sm font-medium">
+                                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-pink-400 to-red-400 flex items-center justify-center">
+                                                        <span className="text-white text-xs sm:text-sm font-medium">
                                                             {(conversation.buyerName || 'U').charAt(0).toUpperCase()}
                                                         </span>
                                                     </div>
                                                     {conversation.unreadCount > 0 && (
-                                                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                                                        <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full flex items-center justify-center">
                                                             <span className="text-white text-xs font-bold">
                                                                 {conversation.unreadCount > 9 ? '9' : conversation.unreadCount}
                                                             </span>
@@ -355,7 +363,7 @@ const VendorChatsPage = () => {
                                                 {/* Conversation Info */}
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center justify-between mb-1">
-                                                        <h3 className="font-medium text-gray-900 truncate text-sm">
+                                                        <h3 className="font-medium text-gray-900 truncate text-xs sm:text-sm">
                                                             {conversation.buyerName}
                                                         </h3>
                                                     </div>
@@ -373,15 +381,21 @@ const VendorChatsPage = () => {
 
                     {/* Right Panel - Chat Interface */}
                     {selectedConversation && (
-                        <div className="flex-1 flex flex-col bg-white rounded-r-lg">
+                        <div className={`${selectedConversation ? 'flex' : 'hidden lg:flex'} flex-1 flex-col bg-white rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none`}>
                             {/* Chat Header */}
-                            <div className="border-b border-gray-200 px-6 py-4">
+                            <div className="border-b border-gray-200 px-3 sm:px-6 py-3 sm:py-4">
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <h2 className="text-lg font-semibold text-gray-900">
+                                    <div className="flex items-center gap-2 sm:gap-3">
+                                        <button 
+                                            onClick={() => setSelectedConversation(null)}
+                                            className="lg:hidden text-gray-500 hover:text-gray-700 mr-2"
+                                        >
+                                            ←
+                                        </button>
+                                        <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                                             {selectedConversation.buyerName}
                                         </h2>
-                                        <span className="text-sm text-gray-500">
+                                        <span className="text-xs sm:text-sm text-gray-500">
                                     12:23 PM
                                 </span>
                                     </div>
@@ -390,15 +404,15 @@ const VendorChatsPage = () => {
                             </div>
 
                             {/* Messages */}
-                            <div className="flex-1 overflow-y-auto px-6 py-6 bg-gray-50">
+                            <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-4 sm:py-6 bg-gray-50">
                                 {chatLoading ? (
                                     <SkeletonLoader type="list" count={4} />
                                 ) : messages.length === 0 ? (
-                                    <div className="text-center text-gray-500 mt-8">
-                                        <p>No messages yet. Start the conversation!</p>
+                                    <div className="text-center text-gray-500 mt-6 sm:mt-8">
+                                        <p className="text-sm sm:text-base">No messages yet. Start the conversation!</p>
                                     </div>
                                 ) : (
-                                    <div className="space-y-4">
+                                    <div className="space-y-3 sm:space-y-4">
                                         {messages.map((message, index) => (
                                             <div
                                                 key={`${message.id}-${message.timestamp}-${index}`}
@@ -407,21 +421,21 @@ const VendorChatsPage = () => {
                                                 }`}
                                             >
                                                 {message.fromEmail !== session?.user?.email && (
-                                                    <div className="flex items-end gap-3">
-                                                        <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-pink-400 to-red-400 flex items-center justify-center flex-shrink-0">
+                                                    <div className="flex items-end gap-2 sm:gap-3">
+                                                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-br from-pink-400 to-red-400 flex items-center justify-center flex-shrink-0">
                                                     <span className="text-white text-xs font-medium">
                                                         {selectedConversation.buyerName.charAt(0).toUpperCase()}
                                                     </span>
                                                         </div>
-                                                        <div className="bg-gray-200 rounded-2xl rounded-tl-md px-4 py-2 max-w-xs">
-                                                            <p className="text-sm text-gray-900">{message.message}</p>
+                                                        <div className="bg-gray-200 rounded-2xl rounded-tl-md px-3 sm:px-4 py-2 max-w-[250px] sm:max-w-xs">
+                                                            <p className="text-xs sm:text-sm text-gray-900">{message.message}</p>
                                                         </div>
                                                     </div>
                                                 )}
                                                 {message.fromEmail === session?.user?.email && (
                                                     <div className="flex gap-2 items-end">
-                                                        <div className="bg-[#022B23] text-white rounded-2xl rounded-tr-md px-4 py-2 max-w-xs">
-                                                            <p className="text-sm">{message.message}</p>
+                                                        <div className="bg-[#022B23] text-white rounded-2xl rounded-tr-md px-3 sm:px-4 py-2 max-w-[250px] sm:max-w-xs">
+                                                            <p className="text-xs sm:text-sm">{message.message}</p>
                                                             <div className="flex items-center justify-end mt-1 gap-1">
                                                         <span className="text-xs text-gray-300">
                                                             {formatTime(message.timestamp)}
@@ -429,7 +443,7 @@ const VendorChatsPage = () => {
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <Image src={blueCircle} alt={'image'} height={24} width={24} />
+                                                            <Image src={blueCircle} alt={'image'} height={20} width={20} className="sm:w-6 sm:h-6" />
                                                         </div>
                                                     </div>
                                                 )}
@@ -441,8 +455,8 @@ const VendorChatsPage = () => {
                             </div>
 
                             {/* Message Input */}
-                            <div className="border-t border-gray-200 px-6 py-4 bg-white">
-                                <div className="flex items-center gap-3">
+                            <div className="border-t border-gray-200 px-3 sm:px-6 py-3 sm:py-4 bg-white">
+                                <div className="flex items-center gap-2 sm:gap-3">
                                     <div className="flex-1 relative">
                                         <input
                                             type="text"
@@ -450,15 +464,15 @@ const VendorChatsPage = () => {
                                             onChange={(e) => setNewMessage(e.target.value)}
                                             onKeyDown={handleKeyPress}
                                             placeholder="Type here"
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#022B23] focus:border-transparent text-sm"
+                                            className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#022B23] focus:border-transparent text-xs sm:text-sm"
                                         />
                                     </div>
                                     <button
                                         onClick={sendMessage}
                                         disabled={!newMessage.trim()}
-                                        className="p-3 bg-[#022B23] text-white rounded-full hover:bg-[#033d32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        className="p-2 sm:p-3 bg-[#022B23] text-white rounded-full hover:bg-[#033d32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
-                                        <Send size={18} />
+                                        <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
                                     </button>
                                 </div>
                             </div>

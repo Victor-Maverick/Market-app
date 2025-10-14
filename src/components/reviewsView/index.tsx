@@ -53,7 +53,19 @@ const ProductTableRow = ({
                 </div>
                 <div className="flex flex-col">
                     <p className="text-[14px] font-medium text-[#101828]">{product.name}</p>
-                    <p className="text-[12px] text-[#667085]">Rating: {product.rating}</p>
+                    <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                className={`text-sm ${
+                                    star <= product.rating ? 'text-yellow-500' : 'text-gray-300'
+                                }`}
+                            >
+                                ★
+                            </span>
+                        ))}
+                        <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+                    </div>
                 </div>
             </div>
 
@@ -64,7 +76,19 @@ const ProductTableRow = ({
                 <p>{product.comment}</p>
             </div>
             <div className="flex items-center text-[#344054] text-[14px] w-[120px] px-[24px]">
-                <p>{product.rating}</p>
+                <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                            key={star}
+                            className={`text-sm ${
+                                star <= product.rating ? 'text-yellow-500' : 'text-gray-300'
+                            }`}
+                        >
+                            ★
+                        </span>
+                    ))}
+                    <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+                </div>
             </div>
         </div>
     );

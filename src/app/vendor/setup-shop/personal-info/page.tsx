@@ -37,9 +37,9 @@ const DropDown = ({
         <div className="relative">
             <div
                 onClick={() => setIsOpen(!isOpen)}
-                className="border-[1.5px] rounded-[14px] h-[58px] flex justify-between px-[18px] border-[#D1D1D1] items-center cursor-pointer"
+                className="border-[1.5px] rounded-[14px] h-[48px] sm:h-[58px] flex justify-between px-[12px] sm:px-[18px] border-[#D1D1D1] items-center cursor-pointer"
             >
-                <p className={`${selectedOption ? "text-[#121212]" : "text-[#BDBDBD]"} text-[16px] font-medium`}>
+                <p className={`${selectedOption ? "text-[#121212]" : "text-[#BDBDBD]"} text-[14px] sm:text-[16px] font-medium truncate`}>
                     {selectedOption ? selectedOption.name : placeholder}
                 </p>
                 <ChevronDown
@@ -194,20 +194,20 @@ const Setup2 = () => {
                 image={dashSlideImg}
                 textColor={'#05966F'}
             />
-            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-25 border-[#ededed] flex items-center">
+            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-4 sm:px-6 lg:px-25 border-[#ededed] flex items-center">
                 <Image src={arrow} alt={'arrow image'} className="cursor-pointer" onClick={handleBack}/>
-                <p className="cursor-pointer text-[14px] font-normal">
+                <p className="cursor-pointer text-[12px] sm:text-[14px] font-normal">
                     <span onClick={handleBack}>Shop information //</span><span className="cursor-pointer font-medium">Vendor information</span>
                 </p>
             </div>
-            <div className="flex ml-[366px] w-auto mt-16 gap-25">
-                <div className="flex flex-col w-[268px] h-[67px] gap-[10px]">
-                    <p className="text-[#022B23] text-[16px] font-medium">Vendor information</p>
+            <div className="flex flex-col lg:flex-row lg:ml-[366px] w-auto mt-8 lg:mt-16 gap-6 lg:gap-25 px-4 sm:px-6 lg:px-0">
+                <div className="flex flex-col w-full lg:w-[268px] gap-[10px] mb-6 lg:mb-0">
+                    <p className="text-[#022B23] text-[16px] sm:text-[18px] font-medium">Vendor information</p>
                     <p className="text-[#707070] font-medium text-[14px]">
                         Information about yourself
                     </p>
                 </div>
-                <div className="flex flex-col w-[400px] h-auto gap-[40px]">
+                <div className="flex flex-col w-full lg:w-[400px] max-w-md lg:max-w-none mx-auto lg:mx-0 h-auto gap-[30px] lg:gap-[40px]">
                     <div className="flex-col flex gap-[10px]">
                         <div className="h-[58px] font-medium text-[#121212] w-full rounded-[14px] border-[1.5px] border-[#D1FAE7] flex items-center px-[18px] text-[14px] bg-[#ECFDF6]">
                             {/*<p>{firstName} {lastName}</p>*/}
@@ -253,10 +253,10 @@ const Setup2 = () => {
                         />
                     </div>
                     <div
-                        className="flex mb-[20px] gap-[9px] justify-center items-center bg-[#022B23] rounded-[12px] h-[52px] cursor-pointer hover:bg-[#033a30] transition-colors"
+                        className="flex mb-[20px] gap-[9px] justify-center items-center bg-[#022B23] rounded-[12px] h-[48px] sm:h-[52px] cursor-pointer hover:bg-[#033a30] transition-colors w-full"
                         onClick={handleContinue}
                     >
-                        <p className="text-[#C6EB5F] font-semibold text-[14px]">Continue to Bank information</p>
+                        <p className="text-[#C6EB5F] font-semibold text-[12px] sm:text-[14px] text-center">Continue to Bank information</p>
                         <Image src={limeArrow} alt="Continue arrow" width={18} height={18} />
                     </div>
                 </div>

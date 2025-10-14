@@ -58,6 +58,7 @@ interface ShopStatistics {
     shippedOrderCount: number;
     totalOrderCount: number;
     processingOrderCount: number;
+    disputedOrderCount: number;
 }
 
 type Product = {
@@ -362,10 +363,14 @@ const DashBoard = () => {
                                         className="bg-[#F99007]"
                                         style={{ width: `${calculateOrderPercentage(shopStatistics.processingOrderCount)}%` }}
                                     ></div>
+                                    <div
+                                        className="bg-[#DC2626]"
+                                        style={{ width: `${calculateOrderPercentage(shopStatistics.disputedOrderCount || 0)}%` }}
+                                    ></div>
                                 </div>
                             </div>
-                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                                <div className="w-full sm:w-[234px] border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                                <div className="w-full border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
                                     <div className="flex items-center gap-[9px]">
                                         <span className="rounded-full w-[6px] h-[6px] bg-[#C6EB5F]"></span>
                                         <p className="text-[#707070] text-[12px]">COMPLETED</p>
@@ -376,7 +381,7 @@ const DashBoard = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="w-full sm:w-[326px] border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-[8px] p-4">
+                                <div className="w-full border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-[8px] p-4">
                                     <div className="flex items-center gap-[9px]">
                                         <span className="rounded-full w-[6px] h-[6px] bg-[#1E1E1E]"></span>
                                         <p className="text-[#707070] text-[12px]">SHIPPED</p>
@@ -388,7 +393,7 @@ const DashBoard = () => {
                                     </div>
                                 </div>
 
-                                <div className="w-full sm:w-[234px] border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
+                                <div className="w-full border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
                                     <div className="flex items-center gap-[9px]">
                                         <span className="rounded-full w-[6px] h-[6px] bg-[#FF5050]"></span>
                                         <p className="text-[#707070] text-[12px]">PENDING</p>
@@ -399,7 +404,7 @@ const DashBoard = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="w-full sm:w-[234px] border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
+                                <div className="w-full border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
                                     <div className="flex items-center gap-[9px]">
                                         <span className="rounded-full w-[6px] h-[6px] bg-[#F99007]"></span>
                                         <p className="text-[#707070] text-[12px]">PROCESSING</p>
@@ -407,6 +412,17 @@ const DashBoard = () => {
                                     <div className="flex w-[108px] h-[28px] items-center gap-[10px]">
                                         <span className="text-[#18181B] font-medium text-[20px]">
                                             {shopStatistics.processingOrderCount}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="w-full border-[1px] flex flex-col border-[#EDEDED] gap-[9px] rounded-lg p-4">
+                                    <div className="flex items-center gap-[9px]">
+                                        <span className="rounded-full w-[6px] h-[6px] bg-[#DC2626]"></span>
+                                        <p className="text-[#707070] text-[12px]">DISPUTED</p>
+                                    </div>
+                                    <div className="flex w-[108px] h-[28px] items-center gap-[10px]">
+                                        <span className="text-[#18181B] font-medium text-[20px]">
+                                            {shopStatistics.disputedOrderCount || 0}
                                         </span>
                                     </div>
                                 </div>

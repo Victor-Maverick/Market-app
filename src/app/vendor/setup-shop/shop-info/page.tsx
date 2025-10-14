@@ -2,6 +2,7 @@
 import DashboardSubHeader from "@/components/dashboardSubHeader";
 import DashboardHeader from "@/components/dashboardHeader";
 import DashboardOptions from "@/components/dashboardOptions";
+import VendorSetupGuard from "@/components/VendorSetupGuard";
 import uploadIcon from '../../../../../public/assets/images/uploadIcon.png'
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
@@ -280,7 +281,7 @@ const Setup1 = () => {
 
         // Validate TIN format if provided
         if (formData.taxIdNumber && !validateTIN(formData.taxIdNumber)) {
-            alert("Please enter a valid TIN in the format: 12345678-0001");
+            alert("Please enter a valid TIN with exactly 10 digits (e.g., 1234567890)");
             return;
         }
 
@@ -320,19 +321,19 @@ const Setup1 = () => {
                 image={dashSlideImg}
                 textColor={'#05966F'}
             />
-            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-25 border-[#ededed] flex items-center">
+            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-4 sm:px-6 lg:px-25 border-[#ededed] flex items-center">
                 <p className="text-[14px] font-medium">
                     Shop information
                 </p>
             </div>
-            <div className="flex ml-[366px] w-auto mt-16 gap-25">
-                <div className="flex flex-col w-[268px] h-[67px] gap-[10px]">
-                    <p className="text-[#022B23] text-[16px] font-medium">Shop information</p>
+            <div className="flex flex-col lg:flex-row lg:ml-[366px] w-auto mt-8 lg:mt-16 gap-6 lg:gap-25 px-4 sm:px-6 lg:px-0">
+                <div className="flex flex-col w-full lg:w-[268px] gap-[10px] mb-6 lg:mb-0">
+                    <p className="text-[#022B23] text-[16px] sm:text-[18px] font-medium">Shop information</p>
                     <p className="text-[#707070] font-medium text-[14px]">
                         Provide information about your shop to complete setup
                     </p>
                 </div>
-                <div className="flex flex-col w-[400px]">
+                <div className="flex flex-col w-full lg:w-[400px] max-w-md lg:max-w-none mx-auto lg:mx-0">
                     {isLoading ? (
                         <LoadingSpinner />
                     ) : (
@@ -345,7 +346,7 @@ const Setup1 = () => {
                                 placeholder="Shop name"
                             />
 
-                            <div className="mt-[38px]">
+                            <div className="mt-[20px] sm:mt-[38px]">
                                 <p className="mb-[5px] text-[12px] font-medium text-[#6D6D6D]">
                                     Upload business logo<span className="text-[#B0B0B0]">(optional)</span>
                                 </p>
@@ -424,25 +425,25 @@ const Setup1 = () => {
 
                             <InputField
                                 id="cacNumber"
-                                label="CAC number (RC-12345 or BN-1234567)"
+                                label="CAC number (e.g., RC-12345 or BN-1234567)"
                                 value={formData.cacNumber}
                                 onChange={handleChange('cacNumber')}
-                                placeholder="RC-12345 or BN-1234567"
+                                placeholder="e.g., RC-12345 or BN-1234567"
                             />
 
                             <InputField
                                 id="taxIdNumber"
-                                label="TIN number (12345678-0001)"
+                                label="TIN number (e.g., 1234567890)"
                                 value={formData.taxIdNumber}
                                 onChange={handleChange('taxIdNumber')}
-                                placeholder="12345678-0001"
+                                placeholder="e.g., 1234567890"
                             />
 
                             <div
-                                className="flex mt-[30px] mb-[20px] gap-[9px] justify-center items-center bg-[#022B23] rounded-[12px] h-[52px] cursor-pointer hover:bg-[#033a30] transition-colors"
+                                className="flex mt-[20px] sm:mt-[30px] mb-[20px] gap-[9px] justify-center items-center bg-[#022B23] rounded-[12px] h-[48px] sm:h-[52px] cursor-pointer hover:bg-[#033a30] transition-colors w-full"
                                 onClick={handleContinue}
                             >
-                                <p className="text-[#C6EB5F] font-semibold text-[14px]">Continue to vendor information</p>
+                                <p className="text-[#C6EB5F] font-semibold text-[12px] sm:text-[14px] text-center">Continue to vendor information</p>
                                 <Image src={limeArrow} alt="Continue arrow" width={18} height={18} />
                             </div>
                         </>
@@ -453,4 +454,12 @@ const Setup1 = () => {
     );
 };
 
-export default Setup1;
+const ProtectedSetup1 = () => {
+    return (
+        <VendorSetupGuard>
+            <Setup1 />
+        </VendorSetupGuard>
+    );
+};
+
+export default ProtectedSetup1;

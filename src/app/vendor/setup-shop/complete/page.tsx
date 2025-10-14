@@ -345,56 +345,56 @@ const SetupCompleteContent = () => {
                 image={dashSlideImg}
                 textColor="#05966F"
             />
-            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-25 border-[#ededed] flex items-center">
+            <div className="h-[44px] gap-[8px] border-b-[0.5px] px-4 sm:px-6 lg:px-25 border-[#ededed] flex items-center">
                 <Image src={arrow} alt="arrow image" className="cursor-pointer" onClick={handleBack} />
-                <p className="text-[14px] font-normal">
+                <p className="text-[12px] sm:text-[14px] font-normal">
                     <span className="cursor-pointer" onClick={returnToShopInfo}>Shop information //</span>
                     <span className="cursor-pointer" onClick={returnToPersonalInfo}> Vendor information //</span>
                     <span className="cursor-pointer" onClick={handleBack}> Bank Details //</span>
                     <span className="cursor-pointer font-medium"> Complete</span>
                 </p>
             </div>
-            <div className="flex ml-[366px] w-auto mt-16 gap-25">
-                <div className="flex flex-col gap-15 h-auto">
-                    <div className="flex flex-col w-[268px] h-[67px] gap-[10px]">
-                        <p className="text-[#022B23] text-[16px] font-medium">Setup complete</p>
+            <div className="flex flex-col lg:flex-row lg:ml-[366px] w-auto mt-8 lg:mt-16 gap-6 lg:gap-25 px-4 sm:px-6 lg:px-0">
+                <div className="flex flex-col gap-6 lg:gap-15 h-auto mb-6 lg:mb-0">
+                    <div className="flex flex-col w-full lg:w-[268px] gap-[10px]">
+                        <p className="text-[#022B23] text-[16px] sm:text-[18px] font-medium">Setup complete</p>
                         <p className="text-[#707070] font-medium text-[14px]">
                             Your setup is complete and pending approval, you&#39;ll be notified when approved.
                         </p>
                     </div>
-                    <div className="flex flex-col w-[244px] py-[10px] px-[12px] border border-[#ededed] h-[87px] bg-[#FCFCFC] rounded-[12px] gap-[7px]">
+                    <div className="flex flex-col w-full lg:w-[244px] py-[10px] px-[12px] border border-[#ededed] h-auto lg:h-[87px] bg-[#FCFCFC] rounded-[12px] gap-[7px]">
                         <p className="text-[#707070] text-[14px] font-medium leading-tight">
                             Pay a store activation fee<br />
                             to continue
                         </p>
-                        <p className="text-[#000000] font-semibold text-[20px]">
+                        <p className="text-[#000000] font-semibold text-[18px] sm:text-[20px]">
                             NGN 5,000.00
                         </p>
                     </div>
                 </div>
-                <div className="flex flex-col w-[400px] h-auto gap-[38px]">
-                    <div className="flex flex-col items-center h-[218px] w-full justify-center">
-                        <Image src={doneImg} alt="setup complete image" />
+                <div className="flex flex-col w-full lg:w-[400px] max-w-md lg:max-w-none mx-auto lg:mx-0 h-auto gap-[20px] sm:gap-[38px]">
+                    <div className="flex flex-col items-center h-[180px] sm:h-[218px] w-full justify-center">
+                        <Image src={doneImg} alt="setup complete image" className="w-[160px] h-[160px] sm:w-auto sm:h-auto" />
                     </div>
                     <div>
                         <button
-                            className={`flex mb-[20px] gap-[9px] justify-center items-center bg-[#022B23] rounded-[12px] h-[52px] cursor-pointer hover:bg-[#033a30] transition-colors w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`flex mb-[20px] gap-[6px] sm:gap-[9px] justify-center items-center bg-[#022B23] rounded-[10px] sm:rounded-[12px] h-[48px] sm:h-[52px] cursor-pointer hover:bg-[#033a30] transition-colors w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                             onClick={handleContinue}
                             disabled={isLoading}
                         >
                             {isLoading ? (
                                 <div className="flex items-center gap-2">
-                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                                    <p className="text-[#C6EB5F] font-semibold text-[14px]">Processing...</p>
+                                    <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
+                                    <p className="text-[#C6EB5F] font-semibold text-[12px] sm:text-[14px]">Processing...</p>
                                 </div>
                             ) : (
                                 <>
-                                    <p className="text-[#C6EB5F] font-semibold text-[14px]">Continue to payment</p>
-                                    <Image src={limeArrow} alt="Continue arrow" width={18} height={18} />
+                                    <p className="text-[#C6EB5F] font-semibold text-[12px] sm:text-[14px] text-center">Continue to payment</p>
+                                    <Image src={limeArrow} alt="Continue arrow" width={16} height={16} className="sm:w-[18px] sm:h-[18px]" />
                                 </>
                             )}
                         </button>
-                        <p onClick={handleSkip} className="text-[14px] mb-[30px] cursor-pointer text-center font-medium text-[#707070]">Skip for now</p>
+                        <p onClick={handleSkip} className="text-[12px] sm:text-[14px] mb-[20px] sm:mb-[30px] cursor-pointer text-center font-medium text-[#707070]">Skip for now</p>
                     </div>
                 </div>
             </div>

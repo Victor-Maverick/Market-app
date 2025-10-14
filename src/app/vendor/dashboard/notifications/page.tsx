@@ -176,7 +176,7 @@ const Notifications = () => {
                             {/* Pagination controls */}
                             {notifications.length > notificationsPerPage && (
                                 <div className="flex justify-center mt-4 mb-10 w-full">
-                                    <div className="flex items-center gap-25">
+                                    <div className="flex items-center gap-2 sm:gap-4">
                                         <button
                                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                             disabled={currentPage === 1}

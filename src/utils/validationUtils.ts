@@ -47,13 +47,8 @@ export const formatCAC = (value: string): string => {
     const digits = cleaned.slice(3).replace(/\D/g, '');
     return `BN-${digits.slice(0, 7)}`;
   } else {
-    // Auto-detect format based on length
-    const digits = cleaned.replace(/[^0-9]/g, '');
-    if (digits.length <= 5) {
-      return `RC-${digits}`;
-    } else {
-      return `BN-${digits.slice(0, 7)}`;
-    }
+    // Don't auto-add prefix, just return the cleaned input
+    return cleaned;
   }
 };
 
@@ -63,8 +58,10 @@ export const validateNIN = (nin: string): boolean => {
 };
 
 export const validateTIN = (tin: string): boolean => {
-  const tinRegex = /^\d{8}-\d{4}$/;
-  return tinRegex.test(tin);
+  // Remove all non-digits
+  const digits = tin.replace(/\D/g, '');
+  // Check if it has exactly 10 digits
+  return digits.length === 10;
 };
 
 export const validateCAC = (cac: string): boolean => {
