@@ -136,22 +136,22 @@ const ShopClient = () => {
             <DashboardOptions />
 
             <div className="flex flex-col">
-                <div className="flex border-b border-[#ededed] mb-6 px-[100px]">
-                    <div className="w-[273px] h-[52px] gap-[24px] flex items-end">
+                <div className="flex border-b border-[#ededed] mb-4 sm:mb-6 px-4 sm:px-6 lg:px-[100px] overflow-x-auto">
+                    <div className="flex items-end gap-4 sm:gap-6 lg:gap-[24px] min-w-max">
                         <p
-                            className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'shop-information' ? 'font-medium  border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
+                            className={`py-2 text-[#11151F] cursor-pointer text-[12px] sm:text-[14px] whitespace-nowrap ${activeTab === 'shop-information' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
                             onClick={() => handleTabChange('shop-information')}
                         >
                             Shop information
                         </p>
                         <p
-                            className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'products' ? 'font-medium  border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
+                            className={`py-2 text-[#11151F] cursor-pointer text-[12px] sm:text-[14px] whitespace-nowrap ${activeTab === 'products' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
                             onClick={() => handleTabChange('products')}
                         >
                             Products
                         </p>
                         <p
-                            className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'reviews' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
+                            className={`py-2 text-[#11151F] cursor-pointer text-[12px] sm:text-[14px] whitespace-nowrap ${activeTab === 'reviews' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
                             onClick={() => handleTabChange('reviews')}
                         >
                             Reviews
@@ -159,7 +159,7 @@ const ShopClient = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg mx-[100px] mb-8">
+                <div className="bg-white rounded-lg mx-4 sm:mx-6 lg:mx-[100px] mb-8">
                     {activeTab === 'shop-information' && <ShopInformation shopData={shopData} />}
                     {activeTab === 'products' && <NewProductView shopId={shopData.id}/>}
                     {activeTab === 'reviews' && <ReviewsView shopId={shopData.id}/>}

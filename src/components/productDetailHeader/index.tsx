@@ -66,16 +66,16 @@ const ProductDetailHeader = () => {
     const { handleLogout } = useLogoutHandler();
 
     return (
-        <div className="flex justify-between items-center h-[78px] px-[100px] py-[18px] bg-white shadow-sm">
+        <div className="flex justify-between items-center h-[78px] px-4 sm:px-6 lg:px-[100px] py-[18px] bg-white shadow-sm">
             <div onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
                 <Image
                     src={headerImg}
                     alt="FarmGo Logo"
                     width={50}
                     height={50}
-                    className="md:w-[50px] md:h-[50px]"
+                    className="w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] md:w-[50px] md:h-[50px]"
                 />
-                <p className="text-[14px] sm:text-[16px] md:text-[18px] font-semibold text-black leading-tight">
+                <p className="text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-semibold text-black leading-tight">
                     Farm<span style={{ color: "#c6eb5f" }}>Go</span> <br />
                     <span className="block">Benue</span>
                 </p>
@@ -92,9 +92,9 @@ const ProductDetailHeader = () => {
                             alt="Profile"
                             width={28}
                             height={28}
-                            className="rounded-full"
+                            className="rounded-full w-[24px] h-[24px] sm:w-[28px] sm:h-[28px]"
                         />
-                        <p className="text-sm font-medium text-black">
+                        <p className="text-xs sm:text-sm font-medium text-black hidden sm:block">
                             Hey, <span className="font-semibold">{userProfile.firstName}</span>
                         </p>
                     </div>

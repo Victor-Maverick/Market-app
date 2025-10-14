@@ -1949,24 +1949,23 @@ const OrderClient = () => {
             <DashboardHeader />
             <DashboardOptions />
             <div className="flex flex-col">
-                <div className="flex border-b border-[#ededed] mb-6 px-[100px]">
-                    <div className="w-[500px] h-[52px] gap-[24px] flex items-end">
+                <div className="flex border-b border-[#ededed] mb-4 sm:mb-6 px-4 sm:px-6 lg:px-[100px] overflow-x-auto">
+                    <div className="flex items-end gap-4 sm:gap-6 lg:gap-[24px] min-w-max">
                         <p
-                            className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'orders' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
+                            className={`py-2 text-[#11151F] cursor-pointer text-[12px] sm:text-[14px] whitespace-nowrap ${activeTab === 'orders' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
                             onClick={() => handleTabChange('orders')}
                         >
                             All Orders
                         </p>
                         <p
-                            className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${activeTab === 'disputes' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
+                            className={`py-2 text-[#11151F] cursor-pointer text-[12px] sm:text-[14px] whitespace-nowrap ${activeTab === 'disputes' ? 'font-medium border-b-2 border-[#C6EB5F]' : 'text-gray-500'}`}
                             onClick={() => handleTabChange('disputes')}
                         >
                             Disputes
                         </p>
-
                     </div>
                 </div>
-                <div className="bg-white rounded-lg mx-[100px] mb-8">
+                <div className="bg-white rounded-lg mx-4 sm:mx-6 lg:mx-[100px] mb-8">
                     {activeTab === 'orders' && (
                         <PendingOrders
                             orders={pendingOrders}

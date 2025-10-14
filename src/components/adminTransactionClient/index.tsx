@@ -724,6 +724,7 @@ const AdminTransactionClient = () => {
             const response = await paymentService.getAllPayouts();
             setPayouts(response);
             setTotalPayouts(response.length);
+            console.log("Payouts:: ",response);
             setTotalPayoutAmount(response.reduce((sum, p) => sum + (p.paidAmount || 0), 0));
         } catch (error) {
             console.error('Error fetching payouts:', error);

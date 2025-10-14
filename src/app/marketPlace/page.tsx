@@ -147,7 +147,7 @@ const ProductCard = ({
 }
 
 const ProductGrid = ({ apiProducts = [] }: { apiProducts?: Product[] }) => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full gap-2 sm:gap-x-3 gap-y-[10px] px-4 sm:px-6 lg:px-25 py-[10px]">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full gap-2 sm:gap-x-3 gap-y-2 sm:gap-y-[10px] px-2 sm:px-4 lg:px-25 py-2 sm:py-[10px]">
         {apiProducts.map((product: Product) => (
             <ProductCard
                 key={`api-${product.id}`}
@@ -432,38 +432,38 @@ const MobileCategoryModal = ({
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
-            <div className="bg-white h-full w-full max-w-sm">
-                <div className="flex justify-between items-center p-4 border-b">
-                    <h2 className="text-lg font-semibold">Categories</h2>
-                    <button onClick={onClose}>
+            <div className="bg-white h-full w-full max-w-sm animate-slide-in-left">
+                <div className="flex justify-between items-center p-4 border-b bg-[#022B23]">
+                    <h2 className="text-lg font-semibold text-white">Categories</h2>
+                    <button onClick={onClose} className="text-white hover:text-gray-300">
                         <X size={24} />
                     </button>
                 </div>
                 <div className="overflow-y-auto h-full pb-20">
                     <ul>
                         <li
-                            className={`flex items-center px-4 py-3 text-[#1E1E1E] border-b cursor-pointer ${
-                                !selectedCategory ? "bg-[#ECFDF6]" : ""
+                            className={`flex items-center px-4 py-3 text-[#1E1E1E] border-b cursor-pointer hover:bg-gray-50 transition-colors ${
+                                !selectedCategory ? "bg-[#ECFDF6] border-l-4 border-l-[#C6EB5F]" : ""
                             }`}
                             onClick={() => {
                                 onAllCategoriesSelect()
                                 onClose()
                             }}
                         >
-                            All Categories
+                            <span className="font-medium">All Categories</span>
                         </li>
                         {categories.map((category) => (
                             <li
                                 key={category.id}
-                                className={`flex items-center px-4 py-3 text-[#1E1E1E] border-b cursor-pointer ${
-                                    selectedCategory?.id === category.id ? "bg-[#ECFDF6]" : ""
+                                className={`flex items-center px-4 py-3 text-[#1E1E1E] border-b cursor-pointer hover:bg-gray-50 transition-colors ${
+                                    selectedCategory?.id === category.id ? "bg-[#ECFDF6] border-l-4 border-l-[#C6EB5F]" : ""
                                 }`}
                                 onClick={() => {
                                     onCategorySelect(category)
                                     onClose()
                                 }}
                             >
-                                {category.name}
+                                <span className={selectedCategory?.id === category.id ? "font-medium" : ""}>{category.name}</span>
                             </li>
                         ))}
                     </ul>
@@ -790,7 +790,7 @@ const MarketPlace = () => {
         <>
             <MarketPlaceHeader />
             <div className="flex-col w-full border-t-[0.5px] border-[#ededed]">
-                <div className="flex justify-between min-h-[400px] lg:h-[595px] pt-[10px] px-4 sm:px-6 lg:px-25">
+                <div className="flex justify-between min-h-[400px] lg:h-[595px] pt-2 lg:pt-[10px] px-2 sm:px-4 lg:px-25">
                     {!isSearching && (
                         <div className="hidden lg:flex w-[20%] flex-col drop-shadow-sm h-full">
                             <div className="rounded-t-[8px] gap-[8px] h-[52px] px-[10px] font-medium text-[16px] flex items-center bg-[#022B23]">
@@ -858,17 +858,27 @@ const MarketPlace = () => {
                     <div className={`flex flex-col h-full ${isSearching ? "w-full" : "w-full lg:w-[80%]"}`}>
                         {!isSearching && (
                             <div className="lg:hidden mb-2">
-                                <button
-                                    onClick={() => setIsMobileCategoryOpen(true)}
-                                    className="flex items-center gap-2 bg-[#022B23] text-white px-4 py-2 rounded-lg"
-                                >
-                                    <Menu size={20} />
-                                    <span>Categories</span>
-                                </button>
+                                <div className="flex gap-2 mb-2">
+                                    <button
+                                        onClick={() => setIsMobileCategoryOpen(true)}
+                                        className="flex items-center gap-2 bg-[#022B23] text-white px-4 py-2 rounded-lg flex-1 justify-center touch-manipulation"
+                                    >
+                                        <Menu size={20} />
+                                        <span className="font-medium">Categories</span>
+                                    </button>
+                                    <div className="flex-1">
+                                        <Dropdown
+                                            items={markets}
+                                            selectedItem={selectedMarket}
+                                            onSelect={handleMarketSelect}
+                                            placeholder="Select Market"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         )}
-                        <div className="flex flex-col sm:flex-row justify-between mb-4 items-stretch sm:items-center gap-2 sm:gap-4">
-                            <div className="flex gap-2 items-center bg-[#F9F9F9] border-[0.5px] border-[#ededed] h-[40px] sm:h-[52px] px-[10px] rounded-[8px] flex-1 max-w-full sm:max-w-[540px]">
+                        <div className="flex flex-col gap-2 mb-2 lg:mb-4">
+                            <div className="flex gap-2 items-center bg-[#F9F9F9] border-[0.5px] border-[#ededed] h-[40px] sm:h-[52px] px-[10px] rounded-[8px] w-full">
                                 <Image
                                     src={searchImg || "/placeholder.svg"}
                                     alt="Search Icon"
@@ -879,15 +889,15 @@ const MarketPlace = () => {
                                 <input
                                     ref={searchInputRef}
                                     placeholder="Search for items here"
-                                    className="w-full text-[#707070] text-[12px] sm:text-[14px] focus:outline-none"
+                                    className="w-full text-[#707070] text-[12px] sm:text-[14px] focus:outline-none bg-transparent"
                                     value={searchQuery}
                                     onChange={handleSearchChange}
                                     onKeyDown={handleKeyDown}
                                 />
                             </div>
                             {!isSearching && (
-                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center rounded-[2px] gap-[2px] p-[2px] border-[0.5px] border-[#ededed]">
-                                    <div className="w-full sm:w-[171px]">
+                                <div className="hidden lg:flex items-center rounded-[2px] gap-[2px] p-[2px] border-[0.5px] border-[#ededed] w-fit">
+                                    <div className="w-[171px]">
                                         <Dropdown
                                             items={markets}
                                             selectedItem={selectedMarket}

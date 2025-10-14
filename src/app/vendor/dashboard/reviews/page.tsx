@@ -75,91 +75,174 @@ const ProductTableRow = ({
     const canFloat = tierData && shopData && (tierData.floatedNumber - shopData.floatedNumber) > 0;
 
     return (
-        <div className={`flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : ''}`}>
-            <div className="flex items-center w-[35%] pr-[24px] gap-3">
-                <div className="bg-[#f9f9f9] h-full w-[70px] overflow-hidden mt-[2px]">
-                    <Image
-                        src={product.mainImageUrl || iPhone}
-                        alt={product.name}
-                        width={70}
-                        height={70}
-                        className="object-cover"
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <p className="text-[14px] font-medium text-[#101828]">{product.name}</p>
-                    <p className="text-[12px] text-[#667085]">Price: {product.price}</p>
-                </div>
-            </div>
-
-            <div className="flex items-center w-[15%] px-[20px]">
-                <p className="text-[12px] font-medium">{product.quantity}</p>
-            </div>
-
-            <div className="flex items-center w-[30%] px-[10px]">
-                <p className="text-[12px] text-[#667085]">{product.quantitySold}</p>
-            </div>
-
-            <div className="flex items-center w-[15%] px-[14px]">
-                {product.rating ? (
-                    <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span
-                                key={star}
-                                className={`text-sm ${
-                                    star <= product.rating! ? 'text-yellow-500' : 'text-gray-300'
-                                }`}
-                            >
-                                ★
-                            </span>
-                        ))}
-                        <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+        <>
+            {/* Desktop Row */}
+            <div className={`hidden lg:flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : ''}`}>
+                <div className="flex items-center w-[35%] pr-[24px] gap-3">
+                    <div className="bg-[#f9f9f9] h-full w-[70px] overflow-hidden mt-[2px]">
+                        <Image
+                            src={product.mainImageUrl || iPhone}
+                            alt={product.name}
+                            width={70}
+                            height={70}
+                            className="object-cover"
+                        />
                     </div>
-                ) : (
-                    <p className="text-[12px] text-[#667085]">No rating</p>
-                )}
-            </div>
+                    <div className="flex flex-col">
+                        <p className="text-[14px] font-medium text-[#101828]">{product.name}</p>
+                        <p className="text-[12px] text-[#667085]">Price: {product.price}</p>
+                    </div>
+                </div>
 
-            <div className="flex items-center w-[5%] relative">
-                {shopData?.promotedStatus === 'PROMOTED' && (
-                    <>
-                        <div onClick={toggleDropdown} className="flex cursor-pointer flex-col gap-[2px]">
-                            <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
-                            <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
-                            <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
+                <div className="flex items-center w-[15%] px-[20px]">
+                    <p className="text-[12px] font-medium">{product.quantity}</p>
+                </div>
+
+                <div className="flex items-center w-[30%] px-[10px]">
+                    <p className="text-[12px] text-[#667085]">{product.quantitySold}</p>
+                </div>
+
+                <div className="flex items-center w-[15%] px-[14px]">
+                    {product.rating ? (
+                        <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={`text-sm ${
+                                        star <= product.rating! ? 'text-yellow-500' : 'text-gray-300'
+                                    }`}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                            <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
                         </div>
-                        {showDropdown && (
-                            <div className="absolute right-0 top-6 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                                {canFeature && (
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                        onClick={() => handleAction('feature')}
-                                    >
-                                        Feature Product
-                                    </button>
-                                )}
-                                {canPromote && (
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                        onClick={() => handleAction('sponsor')}
-                                    >
-                                        Sponsor Product
-                                    </button>
-                                )}
-                                {canFloat && (
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                        onClick={() => handleAction('float')}
-                                    >
-                                        Float Product
-                                    </button>
-                                )}
+                    ) : (
+                        <p className="text-[12px] text-[#667085]">No rating</p>
+                    )}
+                </div>
+
+                <div className="flex items-center w-[5%] relative">
+                    {shopData?.promotedStatus === 'PROMOTED' && (
+                        <>
+                            <div onClick={toggleDropdown} className="flex cursor-pointer flex-col gap-[2px]">
+                                <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
+                                <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
+                                <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
                             </div>
-                        )}
-                    </>
-                )}
+                            {showDropdown && (
+                                <div className="absolute right-0 top-6 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                                    {canFeature && (
+                                        <button
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                            onClick={() => handleAction('feature')}
+                                        >
+                                            Feature Product
+                                        </button>
+                                    )}
+                                    {canPromote && (
+                                        <button
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                            onClick={() => handleAction('sponsor')}
+                                        >
+                                            Sponsor Product
+                                        </button>
+                                    )}
+                                    {canFloat && (
+                                        <button
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                            onClick={() => handleAction('float')}
+                                        >
+                                            Float Product
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+            
+            {/* Mobile Row */}
+            <div className={`lg:hidden border-[1px] border-[#EAECF0] rounded-[12px] p-4 mb-3 bg-white`}>
+                <div className="flex items-start gap-3 mb-3">
+                    <div className="bg-[#f9f9f9] h-[60px] w-[60px] flex items-center justify-center overflow-hidden rounded-[8px] flex-shrink-0">
+                        <Image
+                            src={product.mainImageUrl || iPhone}
+                            alt={product.name}
+                            width={60}
+                            height={60}
+                            className="object-cover w-full h-full"
+                        />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[14px] font-medium text-[#101828] truncate">{product.name}</p>
+                        <p className="text-[12px] text-[#667085] mb-2">Price: {product.price}</p>
+                        <div className="flex items-center gap-4 text-[12px] text-[#667085]">
+                            <span>Qty: {product.quantity}</span>
+                            <span>Sold: {product.quantitySold}</span>
+                        </div>
+                    </div>
+                    {shopData?.promotedStatus === 'PROMOTED' && (
+                        <div className="flex-shrink-0 relative">
+                            <div onClick={toggleDropdown} className="flex cursor-pointer flex-col gap-[2px] p-2">
+                                <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
+                                <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
+                                <span className={`rounded-full w-[3px] h-[3px] bg-black`}></span>
+                            </div>
+                            {showDropdown && (
+                                <div className="absolute right-0 top-8 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                                    {canFeature && (
+                                        <button
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                            onClick={() => handleAction('feature')}
+                                        >
+                                            Feature Product
+                                        </button>
+                                    )}
+                                    {canPromote && (
+                                        <button
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                            onClick={() => handleAction('sponsor')}
+                                        >
+                                            Sponsor Product
+                                        </button>
+                                    )}
+                                    {canFloat && (
+                                        <button
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                            onClick={() => handleAction('float')}
+                                        >
+                                            Float Product
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+                
+                <div className="pt-2 border-t border-[#EAECF0]">
+                    {product.rating ? (
+                        <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={`text-sm ${
+                                        star <= product.rating! ? 'text-yellow-500' : 'text-gray-300'
+                                    }`}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                            <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+                        </div>
+                    ) : (
+                        <p className="text-[12px] text-[#667085]">No rating</p>
+                    )}
+                </div>
+            </div>
+        </>
     );
 }
 
@@ -395,7 +478,8 @@ const ReviewTab = () => {
                     <p className="text-[#101828] text-[18px] font-medium">Products ({products.length})</p>
                     <p className="text-[#667085] text-[14px]">Manage your products and promotions</p>
                 </div>
-                <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                {/* Desktop Table Header */}
+                <div className="hidden lg:flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
                     <div className="flex items-center px-[12px] w-[35%] py-[12px] gap-[4px]">
                         <p className="text-[#667085] font-medium text-[12px]">Products</p>
                         <Image src={arrowDown} alt="Sort" width={12} height={12} />
@@ -412,6 +496,11 @@ const ReviewTab = () => {
                     <div className="flex items-center pr-[12px] w-[5%] py-[12px]">
                         <p className="text-[#667085] font-medium text-[12px]">Actions</p>
                     </div>
+                </div>
+                
+                {/* Mobile Table Header */}
+                <div className="lg:hidden h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0] px-4 flex items-center">
+                    <p className="text-[#667085] font-medium text-[12px]">Product Management</p>
                 </div>
                 <div className="flex flex-col">
                     {currentItems.map((product, index) => (
@@ -470,51 +559,21 @@ const ReviewTab = () => {
 }
 
 
-const Coupons = () => {
-    return <></>;
-}
+
 
 const ReviewsContent = () => {
-    const searchParams = useSearchParams();
-    const initialTab = searchParams.get('tab') as 'reviews' | 'coupons' || 'reviews';
-    const [activeTab, setActiveTab] = useState<'reviews' | 'coupons'>(initialTab);
-    const router = useRouter();
-
-    const handleTabChange = (tab: 'reviews' | 'coupons') => {
-        setActiveTab(tab);
-        router.replace(`/vendor/dashboard/reviews?tab=${tab}`, { scroll: false });
-    };
-
     return (
         <>
             <DashboardHeader />
             <DashboardOptions />
             <div className="flex flex-col py-[20px] sm:py-[30px] px-4 sm:px-6 lg:px-25">
                 <div className="w-full max-w-[359px] h-auto sm:h-[52px] gap-[16px] sm:gap-[24px] flex flex-col sm:flex-row items-start sm:items-end">
-                    <button
-                        onClick={() => handleTabChange('reviews')}
-                        className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${
-                            activeTab === 'reviews'
-                                ? 'font-medium border-b-2 border-[#C6EB5F]'
-                                : 'text-gray-500'
-                        }`}
-                    >
+                    <div className="py-2 text-[#11151F] text-[14px] font-medium border-b-2 border-[#C6EB5F]">
                         Reviews & campaigns
-                    </button>
-                    <button
-                        onClick={() => handleTabChange('coupons')}
-                        className={`py-2 text-[#11151F] cursor-pointer text-[14px] ${
-                            activeTab === 'coupons'
-                                ? 'font-medium border-b-2 border-[#C6EB5F]'
-                                : 'text-gray-500'
-                        }`}
-                    >
-                        Coupons
-                    </button>
+                    </div>
                 </div>
                 <div className="bg-white rounded-lg mt-[20px] mb-8">
-                    {activeTab === 'reviews' && <ReviewTab />}
-                    {activeTab === 'coupons' && <Coupons />}
+                    <ReviewTab />
                 </div>
             </div>
         </>

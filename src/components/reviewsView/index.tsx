@@ -40,57 +40,79 @@ const ProductTableRow = ({
     isLast: boolean;
 }) => {
     return (
-        <div className={`flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
-            <div className="flex items-center w-[480px] pr-[24px] gap-3">
-                <div className="bg-[#f9f9f9] h-full w-[70px] overflow-hidden mt-[2px]">
-                    <Image
-                        src={product.productUrl}
-                        alt={product.name}
-                        width={70}
-                        height={70}
-                        className="object-cover"
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <p className="text-[14px] font-medium text-[#101828]">{product.name}</p>
-                    <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span
-                                key={star}
-                                className={`text-sm ${
-                                    star <= product.rating ? 'text-yellow-500' : 'text-gray-300'
-                                }`}
-                            >
-                                ★
-                            </span>
-                        ))}
-                        <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+        <>
+            {/* Desktop Row */}
+            <div className={`hidden lg:flex h-[72px] ${!isLast ? 'border-b border-[#EAECF0]' : 'border-b border-[#EAECF0]'}`}>
+                <div className="flex items-center w-[480px] pr-[24px] gap-3">
+                    <div className="bg-[#f9f9f9] h-full w-[70px] overflow-hidden mt-[2px]">
+                        <Image
+                            src={product.productUrl}
+                            alt={product.name}
+                            width={70}
+                            height={70}
+                            className="object-cover"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <p className="text-[14px] font-medium text-[#101828]">{product.name}</p>
+                        <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={`text-sm ${
+                                        star <= product.rating ? 'text-yellow-500' : 'text-gray-300'
+                                    }`}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="flex items-center w-[120px] px-[12px]">
-                <p className="text-[12px] text-black font-medium">{product.reviewerFirstName} {product.reviewerLastName}</p>
-            </div>
-            <div className="flex items-center text-[#101828] text-[14px] w-[430px] px-[24px]">
-                <p>{product.comment}</p>
-            </div>
-            <div className="flex items-center text-[#344054] text-[14px] w-[120px] px-[24px]">
-                <div className="flex items-center gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                            key={star}
-                            className={`text-sm ${
-                                star <= product.rating ? 'text-yellow-500' : 'text-gray-300'
-                            }`}
-                        >
-                            ★
-                        </span>
-                    ))}
-                    <span className="text-[12px] text-[#667085] ml-1">({product.rating})</span>
+                <div className="flex items-center w-[120px] px-[12px]">
+                    <p className="text-[12px] text-black font-medium">{product.reviewerFirstName} {product.reviewerLastName}</p>
+                </div>
+                <div className="flex items-center text-[#101828] text-[14px] w-[550px] px-[24px]">
+                    <p>{product.comment}</p>
                 </div>
             </div>
-        </div>
+            
+            {/* Mobile Row */}
+            <div className={`lg:hidden border-[1px] border-[#EAECF0] rounded-[12px] p-4 mb-3 bg-white`}>
+                <div className="flex items-start gap-3 mb-3">
+                    <div className="bg-[#f9f9f9] h-[60px] w-[60px] flex items-center justify-center overflow-hidden rounded-[8px] flex-shrink-0">
+                        <Image
+                            src={product.productUrl}
+                            alt={product.name}
+                            width={60}
+                            height={60}
+                            className="object-cover w-full h-full"
+                        />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[14px] font-medium text-[#101828] truncate">{product.name}</p>
+                        <div className="flex items-center gap-1 mb-2">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={`text-sm ${
+                                        star <= product.rating ? 'text-yellow-500' : 'text-gray-300'
+                                    }`}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        <p className="text-[12px] text-[#667085]">By: {product.reviewerFirstName} {product.reviewerLastName}</p>
+                    </div>
+                </div>
+                
+                <div className="pt-2 border-t border-[#EAECF0]">
+                    <p className="text-[14px] text-[#101828]">{product.comment}</p>
+                </div>
+            </div>
+        </>
     );
 };
 
@@ -178,7 +200,8 @@ const ReviewsView = ({ shopId }: { shopId: number }) => {
                     <p className="text-[#667085] text-[14px]">View reviews on products in your store</p>
                 </div>
 
-                <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                {/* Desktop Table Header */}
+                <div className="hidden lg:flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
                     <div className="flex items-center px-[24px] w-[480px] py-[12px] gap-[4px]">
                         <p className="text-[#667085] font-medium text-[12px]">Products</p>
                         <Image src={arrowDown} alt="Sort" width={12} height={12} />
@@ -186,12 +209,14 @@ const ReviewsView = ({ shopId }: { shopId: number }) => {
                     <div className="flex items-center px-[24px] w-[120px] py-[12px]">
                         <p className="text-[#667085] font-medium text-[12px]">Reviewer</p>
                     </div>
-                    <div className="flex items-center px-[15px] w-[430px] py-[12px]">
+                    <div className="flex items-center px-[15px] w-[550px] py-[12px]">
                         <p className="text-[#667085] font-medium text-[12px]">Comment</p>
                     </div>
-                    <div className="flex items-center px-[24px] w-[120px] py-[12px]">
-                        <p className="text-[#667085] font-medium text-[12px]">Rating</p>
-                    </div>
+                </div>
+                
+                {/* Mobile Table Header */}
+                <div className="lg:hidden h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0] px-4 flex items-center">
+                    <p className="text-[#667085] font-medium text-[12px]">Product Reviews</p>
                 </div>
 
                 <div className="flex flex-col">
