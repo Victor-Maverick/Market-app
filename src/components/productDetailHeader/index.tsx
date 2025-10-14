@@ -1,11 +1,11 @@
 'use client'
-import profileImage from '../../../public/assets/images/profile-circle.png';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import headerImg from "../../../public/assets/images/headerImg.png";
 import { useSession } from "next-auth/react";
 import { useLogoutHandler } from "@/hooks/useLogoutHandler";
+import ProfileAvatar from "@/components/ProfileAvatar";
 
 const ProductDetailHeader = () => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -84,19 +84,10 @@ const ProductDetailHeader = () => {
             {status === 'authenticated' && userProfile ? (
                 <div className="relative profile-dropdown-container">
                     <div
-                        className="flex items-center gap-2 cursor-pointer"
+                        className="cursor-pointer"
                         onClick={handleProfileClick}
                     >
-                        <Image
-                            src={profileImage}
-                            alt="Profile"
-                            width={28}
-                            height={28}
-                            className="rounded-full w-[24px] h-[24px] sm:w-[28px] sm:h-[28px]"
-                        />
-                        <p className="text-xs sm:text-sm font-medium text-black hidden sm:block">
-                            Hey, <span className="font-semibold">{userProfile.firstName}</span>
-                        </p>
+                        <ProfileAvatar size="md" showName={true} fallbackName={userProfile?.firstName || 'User'} />
                     </div>
 
                     {isProfileDropdownOpen && (

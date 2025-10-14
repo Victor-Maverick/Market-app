@@ -9,6 +9,7 @@ import eyeClosed from "../../../public/assets/images/eye.svg";
 import {useSession} from "next-auth/react";
 import axios from "axios";
 import Toast from "@/components/Toast";
+import { Camera, X } from "lucide-react";
 
 type FormField = {
     id: keyof FormData;
@@ -37,6 +38,7 @@ type UserProfile = {
     lastName: string;
     email: string;
     address: string;
+    imageUrl: string;
 };
 
 interface AddressResponse {
@@ -72,6 +74,270 @@ interface AddressModalProps {
     };
     isUpdate?: boolean;
 }
+
+// Profile Picture Modal Component
+const ProfilePictureModal = ({ 
+    isOpen, 
+    onClose, 
+    imageUrl 
+}: { 
+    isOpen: boolean; 
+    onClose: () => void; 
+    imageUrl: string | null; 
+}) => {
+    if (!isOpen || !imageUrl) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+            <div className="relative max-w-4xl max-h-4xl p-4">
+                <button
+                    onClick={onClose}
+                    className="absolute top-2 right-2 z-10 p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
+                >
+                    <X size={24} className="text-gray-600" />
+                </button>
+                <Image
+                    src={imageUrl}
+                    alt="Profile picture"
+                    width={800}
+                    height={800}
+                    className="max-w-full max-h-full object-contain rounded-lg"
+                />
+            </div>
+        </div>
+    );
+};
+
+// Profile Picture Upload Confirmation Modal
+const ProfilePictureUploadModal = ({
+    isOpen,
+    onClose,
+    selectedFile,
+    onConfirm,
+    onCancel,
+    isUploading
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    selectedFile: File | null;
+    onConfirm: () => void;
+    onCancel: () => void;
+    isUploading: boolean;
+}) => {
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (selectedFile) {
+            const url = URL.createObjectURL(selectedFile);
+            setPreviewUrl(url);
+            return () => URL.revokeObjectURL(url);
+        }
+    }, [selectedFile]);
+
+    if (!isOpen || !selectedFile) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="bg-white rounded-lg p-6 w-[90%] max-w-md">
+                <h3 className="text-lg font-semibold text-[#022B23] mb-4">Upload Profile Picture</h3>
+                
+                {previewUrl && (
+                    <div className="flex justify-center mb-4">
+                        <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-200">
+                            <Image
+                                src={previewUrl}
+                                alt="Preview"
+                                width={128}
+                                height={128}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    </div>
+                )}
+                
+                <p className="text-sm text-gray-600 mb-6 text-center">
+                    Do you want to upload this image as your profile picture?
+                </p>
+                
+                <div className="flex gap-3 justify-end">
+                    <button
+                        onClick={onCancel}
+                        disabled={isUploading}
+                        className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={onConfirm}
+                        disabled={isUploading}
+                        className="px-4 py-2 bg-[#022B23] text-white rounded-lg hover:bg-[#033a30] disabled:opacity-50 flex items-center gap-2"
+                    >
+                        {isUploading && (
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        )}
+                        {isUploading ? 'Uploading...' : 'Upload'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Profile Picture Component
+const ProfilePicture = ({ 
+    imageUrl, 
+    onUpload,
+    isUploading = false
+}: { 
+    imageUrl: string | null; 
+    onUpload: (file: File) => void;
+    isUploading?: boolean;
+}) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleClick = () => {
+        if (!isUploading) {
+            setIsDropdownOpen(!isDropdownOpen);
+        }
+    };
+
+    const handleViewPhoto = () => {
+        setIsModalOpen(true);
+        setIsDropdownOpen(false);
+    };
+
+    const handleUploadPhoto = () => {
+        fileInputRef.current?.click();
+        setIsDropdownOpen(false);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                return;
+            }
+            setSelectedFile(file);
+            setIsUploadModalOpen(true);
+        }
+        // Reset file input
+        e.target.value = '';
+    };
+
+    const handleConfirmUpload = () => {
+        if (selectedFile) {
+            onUpload(selectedFile);
+            setIsUploadModalOpen(false);
+            setSelectedFile(null);
+        }
+    };
+
+    const handleCancelUpload = () => {
+        setIsUploadModalOpen(false);
+        setSelectedFile(null);
+    };
+
+    return (
+        <>
+            <div className="relative" ref={dropdownRef}>
+                <div 
+                    className="relative w-16 h-16 rounded-full border-2 border-gray-200 overflow-hidden cursor-pointer hover:border-gray-300 transition-colors"
+                    onClick={handleClick}
+                >
+                    {isUploading ? (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#022B23]"></div>
+                        </div>
+                    ) : imageUrl ? (
+                        <Image
+                            src={imageUrl}
+                            alt="Profile picture"
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                            <Camera size={24} className="text-gray-400" />
+                        </div>
+                    )}
+                </div>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                        {imageUrl && (
+                            <button
+                                onClick={handleViewPhoto}
+                                className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                View Photo
+                            </button>
+                        )}
+                        <button
+                            onClick={handleUploadPhoto}
+                            className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                        >
+                            <Camera size={16} />
+                            {imageUrl ? 'Change Photo' : 'Upload Photo'}
+                        </button>
+                    </div>
+                )}
+            </div>
+            
+            <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+            />
+            
+            <ProfilePictureModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                imageUrl={imageUrl}
+            />
+
+            <ProfilePictureUploadModal
+                isOpen={isUploadModalOpen}
+                onClose={handleCancelUpload}
+                selectedFile={selectedFile}
+                onConfirm={handleConfirmUpload}
+                onCancel={handleCancelUpload}
+                isUploading={isUploading}
+            />
+        </>
+    );
+};
 
 const AddressModal = ({ isOpen, onClose, onSubmit, email, initialData, isUpdate = false }: AddressModalProps) => {
     const [formData, setFormData] = useState({
@@ -210,6 +476,7 @@ const Profile = () => {
     const [userAddress, setUserAddress] = useState<AddressResponse | null>(null);
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const [isLoadingAddress, setIsLoadingAddress] = useState(true);
+    const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
 
     // Toast state
     const [showToast, setShowToast] = useState(false);
@@ -291,6 +558,44 @@ const Profile = () => {
 
         fetchUserData();
     }, [session]);
+
+    const handleProfilePictureUpload = async (file: File) => {
+        if (!session?.user?.email) return;
+
+        try {
+            setIsUploadingPhoto(true);
+            
+            const formData = new FormData();
+            formData.append('email', session.user.email);
+            formData.append('image', file);
+
+            const response = await axios.put(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/upload-photo`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            if (response.status >= 200 && response.status < 300) {
+                // Refresh user profile to get updated image URL
+                const profileResponse = await axios.get<UserProfile>(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/get-profile?email=${session.user.email}`
+                );
+                setUserProfile(profileResponse.data);
+                showSuccessToast('Success', 'Profile picture updated successfully');
+            } else {
+                throw new Error('Failed to upload profile picture');
+            }
+        } catch (err) {
+            showErrorToast('Error', 'Failed to upload profile picture. Please try again.');
+            console.error('Error uploading profile picture:', err);
+        } finally {
+            setIsUploadingPhoto(false);
+        }
+    };
 
     const handleAddressSubmit = async (addressData: { address: string; state: string; lga: string }) => {
         if (!session?.user?.email) return;
@@ -546,9 +851,16 @@ const Profile = () => {
                                 <p className="text-[#101828] text-[18px] font-medium">General settings</p>
                                 <p className="text-[#667085] text-[14px]">View and manage all your settings</p>
                             </div>
-                            <div className="flex flex-col h-[77px] w-full px-[37px] py-[14px] leading-tight">
-                                <p className="text-[#6A6C6E] text-[14px] ">Full Name</p>
-                                <p className="text-[#141415] text-[16px] font-medium">{userProfile.firstName} {userProfile.lastName}</p>
+                            <div className="flex justify-between items-center h-[77px] w-full px-[37px] py-[14px] leading-tight">
+                                <div className="flex flex-col">
+                                    <p className="text-[#6A6C6E] text-[14px] ">Full Name</p>
+                                    <p className="text-[#141415] text-[16px] font-medium">{userProfile.firstName} {userProfile.lastName}</p>
+                                </div>
+                                <ProfilePicture 
+                                    imageUrl={userProfile.imageUrl} 
+                                    onUpload={handleProfilePictureUpload}
+                                    isUploading={isUploadingPhoto}
+                                />
                             </div>
                             <div className="flex justify-between items-center h-[77px] w-full px-[37px] py-[14px] leading-tight">
                                 <div className="flex flex-col">

@@ -1151,12 +1151,12 @@ const NewProductView = ({shopId}) => {
 
     const renderNewItemView = () => {
         return (
-            <div className="flex justify-between px-55">
+            <div className="flex flex-col lg:flex-row lg:justify-between px-4 lg:px-55 gap-6 lg:gap-0">
                 <div className="flex flex-col">
                     <p className="text-[#022B23] text-[14px] font-medium">New product</p>
                     <p className="text-[#707070] text-[14px] font-medium">List a new product on your shop now</p>
                 </div>
-                <div className="flex w-[400px] flex-col">
+                <div className="flex w-full lg:w-[400px] flex-col">
                     <div className="flex flex-col gap-[12px]">
                         <InputField
                             id="productName"
@@ -1488,9 +1488,9 @@ const NewProductView = ({shopId}) => {
         </div>
     );
     return (
-        <div className="flex flex-col gap-[32px] py-[10px]">
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center text-[#8C8C8C] text-[10px] h-[38px] border-[0.5px] border-[#ededed] rounded-[8px]">
+        <div className="flex flex-col gap-4 lg:gap-[32px] py-2 lg:py-[10px] px-4 lg:px-0">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4 sm:gap-0">
+                <div className="flex items-center text-[#8C8C8C] text-[10px] h-[38px] border-[0.5px] border-[#ededed] rounded-[8px] w-full sm:w-auto">
                     <div
                         className={`flex items-center justify-center w-[98px] h-full cursor-pointer ${
                             activeView === 'New-item'

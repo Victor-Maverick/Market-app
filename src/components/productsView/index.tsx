@@ -62,14 +62,14 @@ const MarketProductCard = ({image,name,price, height,imageHeight})=>{
 const ProductGrid = ({ products }: { products: Product[] }) => {
     if (products.length === 0) {
         return (
-            <div className="grid grid-cols-3 gap-x-[15px] gap-y-[15px] py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-x-[15px] lg:gap-y-[15px] py-4 lg:py-6">
                 <p className="text-[#3F3E3E] text-[14px] font-medium">No products found</p>
             </div>
         );
     }
 
     return (
-        <div className="grid grid-cols-3 gap-x-[15px] gap-y-[15px] py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-x-[15px] lg:gap-y-[15px] py-4 lg:py-6">
             {products.map((product, index: Key) => (
                 <MarketProductCard
                     key={index}
@@ -129,9 +129,9 @@ export default function ShopInformation({ shopData }: ShopInformationProps) {
     }
 
     return (
-        <div className="flex gap-[15px] pt-[40px]">
-            <div className="flex flex-col">
-                <div className="border border-[#ededed] w-[513px] rounded-[24px] h-[180px] ">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-[15px] pt-4 lg:pt-[40px] px-4 lg:px-0">
+            <div className="flex flex-col w-full lg:w-auto">
+                <div className="border border-[#ededed] w-full lg:w-[513px] rounded-[24px] min-h-[180px] lg:h-[180px]">
                     <div className="flex items-center border-b border-[#ededed] px-[20px] pt-[10px] justify-between">
                         <div className="flex gap-[8px] pb-[10px] items-center">
                             <Image
@@ -164,56 +164,56 @@ export default function ShopInformation({ shopData }: ShopInformationProps) {
                     </div>
 
                 </div>
-                <div className="flex flex-col gap-[20px]  mt-[30px]">
-                    <div className="flex flex-col gap-y-[10px] gap-[4px]">
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
+                <div className="flex flex-col gap-4 lg:gap-[20px] mt-4 lg:mt-[30px]">
+                    <div className="flex flex-col gap-2 lg:gap-y-[10px]">
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
                             <p className="text-[12px] text-[#6D6D6D] font-medium">Vendor name</p>
                             <p className="text-[#121212] text-[14px] font-medium">{fullName}</p>
                         </div>
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
-                            <p className="text-[12px]  text-[#6D6D6D] font-medium">Shop name</p>
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
+                            <p className="text-[12px] text-[#6D6D6D] font-medium">Shop name</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.name}</p>
                         </div>
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
                             <p className="text-[12px] text-[#6D6D6D] font-medium">Business phone number</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.phone}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-y-[10px] gap-[4px]">
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
-                            <p className="text-[12px]  text-[#6D6D6D] font-medium">Market</p>
+                    <div className="flex flex-col gap-2 lg:gap-y-[10px]">
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
+                            <p className="text-[12px] text-[#6D6D6D] font-medium">Market</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.market}</p>
                         </div>
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
                             <p className="text-[12px] text-[#6D6D6D] font-medium">Shop line</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.marketSection}</p>
                         </div>
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
                             <p className="text-[12px] text-[#6D6D6D] font-medium">Shop number</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.shopNumber}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-y-[10px] gap-[4px]">
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
+                    <div className="flex flex-col gap-2 lg:gap-y-[10px]">
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
                             <p className="text-[12px] text-[#6D6D6D] font-medium">CAC number</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.cacNumber}</p>
                         </div>
-                        <div className="flex px-[18px] gap-[4px] justify-center  w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col ">
-                            <p className="text-[12px]  text-[#6D6D6D] font-medium">TIN</p>
+                        <div className="flex px-4 lg:px-[18px] gap-[4px] justify-center w-full lg:w-[513px] border-[0.5px] border-[#E4E4E4] rounded-[14px] h-[56px] bg-[#F7F7F7] flex-col">
+                            <p className="text-[12px] text-[#6D6D6D] font-medium">TIN</p>
                             <p className="text-[#121212] text-[14px] font-medium">{shopData.taxIdNumber}</p>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div className="flex flex-col">
-                <div className="flex flex-col gap-[8px] h-[44px]">
+            <div className="flex flex-col w-full lg:w-auto mt-6 lg:mt-0">
+                <div className="flex flex-col gap-2 lg:gap-[8px] min-h-[44px]">
                     <p className="text-[#022B23] text-[16px] font-medium">Products({products.length})</p>
                     <p className="font-medium text-[14px] text-[#707070]">Get a preview of products listed on your shop</p>
                 </div>
                 <ProductGrid products={products} />
                 {products.length > 0 && (
-                    <div className="flex w-[143px] h-[24px] justify-between items-center">
+                    <div className="flex w-full lg:w-[143px] h-[24px] justify-between lg:justify-start items-center">
                         <p className="text-[#3F3E3E] text-[14px] font-medium">View all products</p>
                         <Image src={arrow} height={20} width={20} alt={'arrow'}/>
                     </div>

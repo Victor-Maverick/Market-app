@@ -85,8 +85,14 @@ const OrderModal = ({
                 return 'Processing';
             case 'PENDING_DELIVERY':
                 return 'Pending Delivery';
-            default:
+            case 'SHIPPED':
+                return 'Shipped';
+            case 'CANCELLED':
+                return 'Cancelled';
+            case 'PAID':
                 return 'Paid';
+            default:
+                return status; // Return the actual status if not in the predefined list
         }
     };
 
@@ -376,8 +382,14 @@ const ViewUser = () => {
                 return 'Pending';
             case 'PROCESSING':
                 return 'Processing';
-            default:
+            case 'SHIPPED':
+                return 'Shipped';
+            case 'CANCELLED':
+                return 'Cancelled';
+            case 'PAID':
                 return 'Paid';
+            default:
+                return status; // Return the actual status if not in the predefined list
         }
     };
 
@@ -481,9 +493,8 @@ const ViewUser = () => {
                 {/* User Roles Section */}
                 <div className="bg-white rounded-[14px] border border-[#EAECF0] p-4 sm:p-6 lg:p-[24px] mb-[20px]">
                     <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#101828] mb-[12px]">User Roles</h3>
-                    {/* Add this line to show comma-separated roles */}
                     <p className="text-[12px] sm:text-[14px] text-[#667085] mt-2">
-                        {userProfile.roles.map(role => role.replace(/[^a-zA-Z]/g, '').toLowerCase()).join(', ')}
+                        {userProfile.roles.join(', ')}
                     </p>
                 </div>
 

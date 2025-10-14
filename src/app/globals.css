@@ -445,4 +445,452 @@ Enhanced mobile category modal animations */
         gap: 0.5rem;
         padding: 0.5rem;
     }
+}/* Vend
+or shop mobile responsiveness */
+@media (max-width: 1024px) {
+    .vendor-shop-container {
+        padding: 0 1rem;
+    }
+    
+    .vendor-shop-tabs {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .vendor-shop-tabs::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .vendor-shop-content {
+        padding: 1rem;
+    }
+}
+
+/* Mobile product form improvements */
+@media (max-width: 768px) {
+    .product-form-container {
+        padding: 0 1rem;
+    }
+    
+    .product-form-field {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .product-image-upload {
+        width: 100%;
+        min-height: 120px;
+    }
+    
+    .product-grid-mobile {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+    .product-grid-tablet {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* Mobile shop information layout */
+@media (max-width: 1024px) {
+    .shop-info-layout {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .shop-info-card {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .shop-info-fields {
+        gap: 0.75rem;
+    }
+}
+
+/* Mobile product management improvements */
+@media (max-width: 768px) {
+    .product-management-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .product-management-tabs {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .product-table-mobile {
+        display: block;
+    }
+    
+    .product-table-desktop {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .product-table-mobile {
+        display: none;
+    }
+    
+    .product-table-desktop {
+        display: block;
+    }
+}
+
+/* Mobile review cards */
+@media (max-width: 1024px) {
+    .review-card-mobile {
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: 0.75rem;
+        border: 1px solid #EAECF0;
+    }
+    
+    .review-content-mobile {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .review-rating-mobile {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Touch-friendly interactions for vendor pages */
+@media (hover: none) and (pointer: coarse) {
+    .vendor-action-button {
+        min-height: 48px;
+        min-width: 48px;
+        padding: 0.75rem;
+    }
+    
+    .vendor-dropdown-item {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+    
+    .vendor-tab-button {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Responsive vendor dashboard statistics */
+@media (max-width: 640px) {
+    .vendor-stats-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1rem;
+    }
+    
+    .vendor-stats-card {
+        min-height: 100px;
+        padding: 1rem;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .vendor-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}/* Profil
+e picture styles */
+.profile-picture-container {
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 2px solid #e5e7eb;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.profile-picture-container:hover {
+    border-color: #d1d5db;
+}
+
+.profile-picture-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-picture-loading {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Profile picture modal styles */
+.profile-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+}
+
+.profile-modal-content {
+    position: relative;
+    max-width: 56rem;
+    max-height: 56rem;
+    padding: 1rem;
+}
+
+.profile-modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.profile-modal-close:hover {
+    background-color: #f3f4f6;
+}
+
+.profile-modal-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 0.5rem;
+}
+
+/* Mobile responsive profile picture */
+@media (max-width: 640px) {
+    .profile-picture-container {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .profile-modal-content {
+        max-width: 90vw;
+        max-height: 90vh;
+        padding: 0.5rem;
+    }
+}
+
+/* Touch-friendly profile picture interactions */
+@media (hover: none) and (pointer: coarse) {
+    .profile-picture-container {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .profile-modal-close {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.75rem;
+    }
+}
+
+/* Profile picture upload animation */
+@keyframes profile-upload {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.profile-picture-uploading {
+    animation: profile-upload 1s ease-in-out infinite;
+}
+
+/* High contrast mode support for profile picture */
+@media (prefers-contrast: high) {
+    .profile-picture-container {
+        border: 3px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .profile-picture-container,
+    .profile-modal-close,
+    .profile-picture-uploading {
+        transition: none;
+        animation: none;
+    }
+}/* Profil
+e picture dropdown styles */
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 0.5rem;
+    width: 12rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.profile-dropdown-item {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.875rem;
+    color: #374151;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.15s ease;
+}
+
+.profile-dropdown-item:hover {
+    background-color: #f9fafb;
+}
+
+.profile-dropdown-item:focus {
+    outline: none;
+    background-color: #f3f4f6;
+}
+
+/* Profile picture upload confirmation modal */
+.profile-upload-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.profile-upload-modal-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 28rem;
+}
+
+.profile-upload-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.profile-upload-preview-image {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+}
+
+/* Mobile responsive dropdown */
+@media (max-width: 640px) {
+    .profile-dropdown {
+        right: -2rem;
+        width: 10rem;
+    }
+    
+    .profile-dropdown-item {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.8125rem;
+    }
+    
+    .profile-upload-modal-content {
+        width: 95%;
+        padding: 1rem;
+    }
+    
+    .profile-upload-preview-image {
+        width: 6rem;
+        height: 6rem;
+    }
+}
+
+/* Touch-friendly dropdown items */
+@media (hover: none) and (pointer: coarse) {
+    .profile-dropdown-item {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Dropdown animation */
+.profile-dropdown {
+    animation: dropdown-fade-in 0.15s ease-out;
+}
+
+@keyframes dropdown-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-0.5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Upload modal animation */
+.profile-upload-modal {
+    animation: modal-fade-in 0.2s ease-out;
+}
+
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.profile-upload-modal-content {
+    animation: modal-scale-in 0.2s ease-out;
+}
+
+@keyframes modal-scale-in {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .profile-dropdown,
+    .profile-upload-modal,
+    .profile-upload-modal-content {
+        animation: none;
+    }
 }

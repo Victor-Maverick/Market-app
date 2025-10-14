@@ -3,7 +3,6 @@ import Image, { StaticImageData } from "next/image";
 import notificationImg from "../../../public/assets/images/notification-bing.png";
 import routing from "../../../public/assets/images/routing.png";
 import bag from "../../../public/assets/images/bag.png";
-import profileImg from '@/../public/assets/images/profile-circle.png';
 import wishListImg from '@/../public/assets/images/heart.png';
 import farmGoLogo from "../../../public/assets/images/farmGoLogo.png";
 import { useRouter, usePathname } from "next/navigation";
@@ -13,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { useLogoutHandler } from "@/hooks/useLogoutHandler";
 import { FiMenu, FiX } from "react-icons/fi";
 import axios from "axios";
+import ProfileAvatar from "@/components/ProfileAvatar";
 
 interface HeaderItem {
     img: StaticImageData;
@@ -180,19 +180,10 @@ const MarketPlaceHeader = () => {
                             {/* Profile dropdown */}
                             <div className="relative">
                                 <div
-                                    className="flex items-center space-x-1 cursor-pointer hover:opacity-80 transition-opacity"
+                                    className="cursor-pointer hover:opacity-80 transition-opacity"
                                     onClick={handleProfileClick}
                                 >
-                                    <Image
-                                        src={profileImg}
-                                        alt="Profile"
-                                        height={20}
-                                        width={20}
-                                        className="w-5 h-5 rounded-full"
-                                    />
-                                    <span className="text-sm font-medium text-gray-900">
-                                        Hey, {userProfile?.firstName}
-                                    </span>
+                                    <ProfileAvatar size="md" showName={true} fallbackName={userProfile?.firstName || 'User'} />
                                 </div>
 
                                 {isProfileDropdownOpen && (
@@ -265,19 +256,10 @@ const MarketPlaceHeader = () => {
                         {/* Mobile profile dropdown */}
                         <div className="px-3 py-2">
                             <div
-                                className="flex items-center cursor-pointer"
+                                className="cursor-pointer"
                                 onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                             >
-                                <Image
-                                    src={profileImg}
-                                    alt="Profile"
-                                    height={20}
-                                    width={20}
-                                    className="w-5 h-5 rounded-full mr-3"
-                                />
-                                <span className="text-base font-medium text-gray-900">
-                                    Hey, {userProfile?.firstName}
-                                </span>
+                                <ProfileAvatar size="md" showName={true} fallbackName={userProfile?.firstName || 'User'} />
                             </div>
 
                             {isProfileDropdownOpen && (

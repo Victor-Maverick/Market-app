@@ -6,8 +6,8 @@ import { Menu, X, Bell } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useLogoutHandler } from '@/hooks/useLogoutHandler';
 import headerImg from '../../../public/assets/images/headerImg.png';
-import profileImage from '../../../public/assets/images/profile-circle.png';
 import axios from 'axios';
+import ProfileAvatar from '@/components/ProfileAvatar';
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -113,13 +113,14 @@ const Header = () => {
                     </div>
 
                     <div
-                        className="flex items-center gap-2 cursor-pointer"
+                        className="cursor-pointer"
                         onClick={handleProfileClick}
                     >
-                        <Image src={profileImage} alt="Profile" width={28} height={28} className="rounded-full" />
-                        <p className="text-sm font-medium text-black">
-                            Hey, <span className="font-semibold">{userProfile.firstName}</span>
-                        </p>
+                        <ProfileAvatar 
+                            size="md" 
+                            showName={true} 
+                            fallbackName={userProfile?.firstName || 'User'}
+                        />
                     </div>
 
                     {isProfileDropdownOpen && (
@@ -197,13 +198,14 @@ const Header = () => {
                             </div>
 
                             <div
-                                className="flex items-center gap-2 cursor-pointer"
+                                className="cursor-pointer"
                                 onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                             >
-                                <Image src={profileImage} alt="Profile" width={28} height={28} className="rounded-full" />
-                                <p className="text-sm font-medium text-black">
-                                    <span className="font-semibold">{userProfile.firstName}</span>
-                                </p>
+                                <ProfileAvatar 
+                                    size="md" 
+                                    showName={true} 
+                                    fallbackName={userProfile?.firstName || 'User'}
+                                />
                             </div>
                             {isProfileDropdownOpen && (
                                 <div className="mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">

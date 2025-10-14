@@ -275,7 +275,7 @@ const DashBoard = () => {
                                        className="h-4 w-4 sm:h-[18px] sm:w-[18px]"/>
                                 <p>Pending orders</p>
                             </div>
-                            <p className="text-[#18181B] ml-3 sm:ml-[15px] pb-2 font-medium text-sm sm:text-[16px]">0</p>
+                            <p className="text-[#18181B] ml-3 sm:ml-[15px] pb-2 font-medium text-sm sm:text-[16px]">{shopStatistics?.pendingOrderCount || 0}</p>
                         </div>
                     </div>
 
