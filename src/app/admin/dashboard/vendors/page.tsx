@@ -6,6 +6,7 @@ import arrowDown from "../../../../../public/assets/images/arrow-down.svg";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { VendorsTableSkeleton, StatsCardsLoadingSkeleton } from "@/components/LoadingSkeletons";
+import CSVExportButton from "@/components/CSVExportButton";
 
 interface ShopResponse {
     id: number;
@@ -317,6 +318,13 @@ const Vendors = () => {
                                     <p className="text-[14px] text-[#667085]">View and manage vendors here</p>
                                 </div>
                             </div>
+                            <CSVExportButton
+                                data={shops}
+                                filename="vendors_export"
+                                headers={['id', 'firstName', 'lastName', 'name', 'address', 'phone', 'status', 'market', 'marketSection']}
+                                excludeFields={['logoUrl', 'cacNumber', 'taxIdNumber', 'nin', 'bankName', 'accountNumber']}
+                                className="bg-[#022B23] text-[#C6EB5F] hover:bg-[#033A2E]"
+                            />
                         </div>
 
                         <div className="w-full h-[44px] flex bg-[#F9FAFB] border-b-[0.5px] border-[#EAECF0]">

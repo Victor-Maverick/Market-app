@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import CSVExportButton from "@/components/CSVExportButton";
 
 interface Shop{
     id: number;
@@ -356,6 +357,12 @@ const Markets = () => {
                                 <p className="text-[14px] text-[#667085]">View and manage markets here</p>
                             </div>
                         </div>
+                        <CSVExportButton
+                            data={marketData.markets}
+                            filename="markets_export"
+                            headers={['id', 'name', 'state', 'marketId', 'lines', 'numberOfShops', 'status']}
+                            className="bg-[#022B23] text-[#C6EB5F] hover:bg-[#033A2E]"
+                        />
                     </div>
 
                     <div className="w-full h-[44px] flex bg-[#F9FAFB] border-b-[0.5px] border-[#EAECF0]">

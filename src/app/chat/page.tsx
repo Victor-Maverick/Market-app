@@ -161,24 +161,24 @@ const ChatPage: React.FC = () => {
         <>
             <MarketPlaceHeader />
             <div className="h-[48px] w-full border-b-[0.5px] border-[#EDEDED]">
-                <div className="h-[48px] px-25 gap-[8px] items-center flex">
+                <div className="h-[48px] px-4 lg:px-25 gap-[8px] items-center flex">
                     <BackButton variant="default" text="Go back" />
-                    <p className="text-[14px] text-[#3F3E3E]">
+                    <p className="text-[14px] text-[#3F3E3E] truncate">
                         Home // <span className="font-medium text-[#022B23]">Chat with {vendorName}</span>
                     </p>
                 </div>
             </div>
 
-            <div className="mx-25 my-6">
+            <div className="mx-4 lg:mx-25 my-6">
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-[calc(100vh-200px)]">
                     {/* Chat Header */}
-                    <div className="border-b border-gray-200 px-6 py-4 rounded-t-lg">
+                    <div className="border-b border-gray-200 px-4 lg:px-6 py-4 rounded-t-lg">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <h2 className="text-lg font-semibold text-gray-900">
+                                <h2 className="text-lg font-semibold text-gray-900 truncate">
                                     {vendorName}
                                 </h2>
-                                <span className="text-sm text-gray-500">
+                                <span className="text-sm text-gray-500 hidden sm:block">
                   12:23 PM
                 </span>
                             </div>
@@ -187,7 +187,7 @@ const ChatPage: React.FC = () => {
                     </div>
 
                     {/* Messages */}
-                    <div className="flex-1 overflow-y-auto px-6 py-6 bg-gray-50 max-h-[calc(100vh-300px)]">
+                    <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-6 bg-gray-50 max-h-[calc(100vh-300px)]">
                         {messages.length === 0 ? (
                             <div className="text-center text-gray-500 mt-8">
                                 <p>No messages yet. Start the conversation!</p>
@@ -202,27 +202,27 @@ const ChatPage: React.FC = () => {
                                         }`}
                                     >
                                         {message.fromEmail !== session?.user?.email ? (
-                                            <div className="flex items-end gap-3">
+                                            <div className="flex items-end gap-2 lg:gap-3">
                                                 <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-pink-400 to-red-400 flex items-center justify-center flex-shrink-0">
                           <span className="text-white text-xs font-medium">
                             {vendorName.charAt(0).toUpperCase()}
                           </span>
                                                 </div>
-                                                <div className="bg-gray-200 rounded-2xl rounded-tl-md px-4 py-2 max-w-xs">
-                                                    <p className="text-sm text-gray-900">{message.message}</p>
+                                                <div className="bg-gray-200 rounded-2xl rounded-tl-md px-3 lg:px-4 py-2 max-w-[250px] sm:max-w-xs">
+                                                    <p className="text-sm text-gray-900 break-words">{message.message}</p>
                                                 </div>
                                             </div>
                                         ) : (
                                             <div className="flex gap-2 items-end">
-                                                <div className="bg-[#022B23] text-white rounded-2xl rounded-tr-md px-4 py-2 max-w-xs">
-                                                    <p className="text-sm">{message.message}</p>
+                                                <div className="bg-[#022B23] text-white rounded-2xl rounded-tr-md px-3 lg:px-4 py-2 max-w-[250px] sm:max-w-xs">
+                                                    <p className="text-sm break-words">{message.message}</p>
                                                     <div className="flex items-center justify-end mt-1 gap-1">
                             <span className="text-xs text-gray-300">
                               {formatTime(message.timestamp)}
                             </span>
                                                     </div>
                                                 </div>
-                                                <div>
+                                                <div className="flex-shrink-0">
                                                     <Image src={blueCircle} alt="User avatar" height={24} width={24} />
                                                 </div>
                                             </div>
@@ -235,8 +235,8 @@ const ChatPage: React.FC = () => {
                     </div>
 
                     {/* Message Input */}
-                    <div className="border-t border-gray-200 px-6 py-4 bg-white rounded-b-lg">
-                        <div className="flex items-center gap-3">
+                    <div className="border-t border-gray-200 px-4 lg:px-6 py-4 bg-white rounded-b-lg">
+                        <div className="flex items-center gap-2 lg:gap-3">
                             <div className="flex-1 relative">
                                 <input
                                     type="text"
@@ -244,15 +244,15 @@ const ChatPage: React.FC = () => {
                                     onChange={(e) => setNewMessage(e.target.value)}
                                     onKeyDown={handleKeyPress}
                                     placeholder="Type here"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#022B23] focus:border-transparent text-sm"
+                                    className="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#022B23] focus:border-transparent text-sm"
                                 />
                             </div>
                             <button
                                 onClick={sendMessage}
                                 disabled={!newMessage.trim()}
-                                className="p-3 bg-[#022B23] text-white rounded-full hover:bg-[#033d32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="p-2 lg:p-3 bg-[#022B23] text-white rounded-full hover:bg-[#033d32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
                             >
-                                <Send size={18} />
+                                <Send size={16} className="lg:w-[18px] lg:h-[18px]" />
                             </button>
                         </div>
                     </div>

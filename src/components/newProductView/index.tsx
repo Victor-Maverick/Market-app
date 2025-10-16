@@ -124,7 +124,7 @@ const ProductActionsDropdown = ({
                         >
                             Edit
                         </li>
-                        <li className="px-4 py-2 text-[12px] hover:bg-[#ECFDF6] cursor-pointer">Promote</li>
+
                         <li
                             className="px-4 py-2 text-[12px] hover:bg-[#FFFAF9] cursor-pointer text-[#FF5050]"
                             onClick={() => {

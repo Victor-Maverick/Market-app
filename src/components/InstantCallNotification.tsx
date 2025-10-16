@@ -27,6 +27,28 @@ const InstantCallNotification: React.FC<InstantCallNotificationProps> = ({
       // Play incoming call sound
       AudioUtils.playIncomingCallSound();
       
+      // Show browser notification for maximum visibility
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const notification = new Notification(`Incoming ${call.type === 'video' ? 'Video' : 'Voice'} Call`, {
+          body: `Call from ${call.callerEmail}`,
+          icon: '/favicon.ico',
+          requireInteraction: true,
+          tag: `call-${call.roomName}`,
+        });
+
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+
+        // Auto-close notification when call component unmounts
+        const cleanup = () => notification.close();
+        return cleanup;
+      } else if ('Notification' in window && Notification.permission === 'default') {
+        // Request permission for future calls
+        Notification.requestPermission();
+      }
+      
       // Start countdown timer
       const timer = setInterval(() => {
         setTimeLeft((prev) => {
@@ -66,8 +88,8 @@ const InstantCallNotification: React.FC<InstantCallNotificationProps> = ({
   if (!isVisible || !call) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-[9999] transform transition-all duration-300 ease-out animate-pulse">
-      <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden w-80 max-w-sm">
+    <div className="fixed top-4 right-4 z-[9999] transform transition-all duration-300 ease-out animate-bounce">
+      <div className="bg-white rounded-xl shadow-2xl border-2 border-blue-500 overflow-hidden w-80 max-w-sm ring-4 ring-blue-500/20">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 relative">
           <div className="flex items-center justify-between">

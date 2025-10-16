@@ -427,18 +427,18 @@ const ReviewTab = () => {
 
     return (
         <>
-            <div className="flex w-full h-[131px] mb-[30px] justify-between items-center">
-                <div className="h-full gap-[12px] w-full flex flex-col">
+            <div className="flex flex-col lg:flex-row w-full min-h-[131px] mb-[30px] gap-[20px] lg:gap-0 lg:justify-between lg:items-center">
+                <div className="flex-1 gap-[12px] w-full flex flex-col">
                     <p className="text-[#022B23] text-[16px] font-medium">Campaign performance</p>
-                    <div className="gap-[15px] w-[85%] flex">
+                    <div className="gap-[15px] w-full lg:w-[85%] flex flex-col lg:flex-row">
                         {shopData?.promotedStatus === 'PROMOTED' && tierData ? (
-                            <div className="flex items-center gap-[15px] w-full">
-                                <div className="flex flex-col pt-[18px] px-[10px] pb-[10px] gap-[14px] w-[25%] h-[100px] rounded-[14px] border-[0.5px] border-[#E4E4E7]">
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-[15px] w-full">
+                                <div className="flex flex-col pt-[18px] px-[10px] pb-[10px] gap-[14px] w-full sm:w-[50%] lg:w-[25%] h-[100px] rounded-[14px] border-[0.5px] border-[#E4E4E7]">
                                     <div className="flex items-center gap-[8px]">
                                         <Image src={flag} alt={'image'}/>
                                         <p className="text-[12px] text-[#71717A] font-medium">Campaign tier</p>
                                     </div>
-                                    <div className="flex justify-between items-center ">
+                                    <div className="flex justify-between items-center">
                 <span className="rounded-[100px] cursor-pointer text-[#022B23] text-[14px] font-medium flex items-center justify-center bg-[#C6EB5F] w-[68px] h-[32px]">
                     {tierData.tier}
                 </span>
@@ -447,8 +447,8 @@ const ReviewTab = () => {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col pt-[18px] px-[10px] pb-[10px] gap-[14px] w-[25%] h-[100px] rounded-[14px] border-[0.5px] border-[#E4E4E7]">
-                                    <div className="flex justify-between mt-[20px] text-[10px] text-[#71717A]">
+                                <div className="flex flex-col pt-[18px] px-[10px] pb-[10px] gap-[14px] w-full sm:w-[50%] lg:w-[25%] h-[100px] rounded-[14px] border-[0.5px] border-[#E4E4E7]">
+                                    <div className="flex flex-col lg:flex-row lg:justify-between mt-[20px] text-[10px] text-[#71717A] gap-[4px] lg:gap-0">
                                         <p>Featured: {shopData.featuredNumber}/{tierData.featuredNumber}</p>
                                         <p>Promoted: {shopData.promotedNumber}/{tierData.promotedNumber}</p>
                                         <p>Floated: {shopData.floatedNumber}/{tierData.floatedNumber}</p>
@@ -465,7 +465,7 @@ const ReviewTab = () => {
                 {shopData?.promotedStatus !== 'PROMOTED' && (
                     <div
                         onClick={handlePromoteShop}
-                        className="w-[15%] cursor-pointer flex items-center gap-[9px] text-[14px] text-[#C6EB5F] font-medium justify-center rounded-[12px] h-[52px] border bg-[#033228]"
+                        className="w-full lg:w-[15%] cursor-pointer flex items-center gap-[9px] text-[14px] text-[#C6EB5F] font-medium justify-center rounded-[12px] h-[52px] border bg-[#033228]"
                     >
                         <p>Promote shop</p>
                         <Image src={promoteIcon} alt={'image'}/>

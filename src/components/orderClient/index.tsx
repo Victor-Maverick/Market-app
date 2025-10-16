@@ -1529,7 +1529,7 @@ const Disputes = () => {
                         <p className="text-[#667085] text-[14px]">View all disputes</p>
                     </div>
 
-                    <div className="flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
+                    <div className="hidden lg:flex h-[44px] bg-[#F9FAFB] border-b-[1px] border-[#EAECF0]">
                         <div className="flex items-center px-[24px] w-[30%] py-[12px] gap-[4px]">
                             <p className="text-[#667085] font-medium text-[12px]">Products</p>
                             <Image src={arrowDown} alt="Sort" width={12} height={12} />

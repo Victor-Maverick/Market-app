@@ -26,7 +26,14 @@ const CallManager: React.FC<CallManagerProps> = ({ children }) => {
   // Handle incoming call notifications - instant top-right notification
   useEffect(() => {
     if (incomingCall && !currentCall) {
+      console.log('📞 Showing instant call notification for:', incomingCall.callerEmail);
       setShowInstantNotification(true);
+      
+      // Ensure the page is focused and visible
+      if (document.hidden) {
+        // Try to bring the window to focus
+        window.focus();
+      }
     } else {
       setShowInstantNotification(false);
     }
@@ -90,6 +97,12 @@ const CallManager: React.FC<CallManagerProps> = ({ children }) => {
 
 
   if (!session?.user?.email) {
+    return <>{children}</>;
+  }
+
+  // Skip call management for ADMINS and SUPER_ADMINS as they don't receive calls
+  const userRoles = session.user.roles || [];
+  if (userRoles.includes('ADMIN') || userRoles.includes('SUPER_ADMIN')) {
     return <>{children}</>;
   }
 

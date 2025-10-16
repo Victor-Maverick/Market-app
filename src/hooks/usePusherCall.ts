@@ -33,6 +33,13 @@ export const usePusherCall = (): PusherCallHook => {
   const setupCallNotifications = useCallback(() => {
     if (!pusher || !session?.user?.email) return;
 
+    // Skip call notifications for ADMINS and SUPER_ADMINS as they don't receive calls
+    const userRoles = session.user.roles || [];
+    if (userRoles.includes('ADMIN') || userRoles.includes('SUPER_ADMIN')) {
+      console.log('🔕 Skipping call notifications for admin user:', session.user.email);
+      return;
+    }
+
     try {
       const channelName = `user-${session.user.email}`;
       // Subscribe to user's public channel for call notifications
@@ -42,8 +49,14 @@ export const usePusherCall = (): PusherCallHook => {
 
       // Handle incoming call notifications
       userChannel.bind('incoming-call', (data: CallResponse) => {
-        console.log('Incoming call from:', data.callerEmail);
+        console.log('📞 Incoming call received instantly from:', data.callerEmail);
+        console.log('📞 Call data:', data);
         setIncomingCall(data);
+        
+        // Ensure immediate visibility by focusing window if hidden
+        if (document.hidden) {
+          window.focus();
+        }
       });
 
       // Handle call accepted notifications

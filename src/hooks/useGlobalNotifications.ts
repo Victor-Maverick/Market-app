@@ -7,6 +7,7 @@ import { usePusher } from '../providers/PusherProvider';
 /**
  * Hook to handle global notifications across the application
  * This hook listens for various notification types and triggers browser notifications
+ * Note: ADMINS and SUPER_ADMINS are excluded from call/message notifications
  */
 export const useGlobalNotifications = () => {
   const { data: session } = useSession();
@@ -14,6 +15,13 @@ export const useGlobalNotifications = () => {
 
   useEffect(() => {
     if (!pusher || !session?.user?.email || !isConnected) return;
+
+    // Skip websocket setup for ADMINS and SUPER_ADMINS as they don't receive calls/messages
+    const userRoles = session.user.roles || [];
+    if (userRoles.includes('ADMIN') || userRoles.includes('SUPER_ADMIN')) {
+      console.log('🔔 Skipping websocket setup for admin user:', session.user.email);
+      return;
+    }
 
     const channelName = `user-${session.user.email}`;
     console.log('🔔 Setting up global notifications for:', channelName);

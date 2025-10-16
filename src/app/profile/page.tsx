@@ -370,8 +370,8 @@ const AddressModal = ({ isOpen, onClose, onSubmit, email, initialData, isUpdate 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#808080]/20">
-            <div className="bg-white px-10 py-8 w-[600px] rounded-[24px] gap-[30px] flex flex-col items-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#808080]/20 p-4">
+            <div className="bg-white px-6 lg:px-10 py-8 w-full max-w-[600px] rounded-[24px] gap-[30px] flex flex-col items-center max-h-[90vh] overflow-y-auto">
                 <div className="w-full text-left">
                     <h2 className="text-[16px] font-medium text-[#022B23]">{isUpdate ? 'Update' : 'Add'} Address</h2>
                     <p className="text-[14px] font-medium leading-tight text-[#707070]">
@@ -814,34 +814,34 @@ const Profile = () => {
                     <p className="text-[14px] text-[#3F3E3E]">Home // <span className="font-medium text-[#022B23]">Profile</span></p>
                 </div>
             </div>
-            <div className="pt-[62px] px-25">
-                <div className="flex w-[400px] bg-[#f8f8f8] mb-[10px] h-[40px] rounded-[10px] items-center px-[8px]">
+            <div className="pt-[62px] px-4 lg:px-25">
+                <div className="flex w-full max-w-[400px] bg-[#f8f8f8] mb-[10px] h-[40px] rounded-[10px] items-center px-[8px]">
                     <p className="text-[12px] font-medium text-[#022B23]">My profile</p>
                 </div>
-                <div className="flex gap-[30px] ">
-                    <div className="flex flex-col gap-[14px]">
-                        <div className="flex flex-col w-[400px] h-[120px] rounded-[12px] border-[1px] border-[#EDEDED]">
+                <div className="flex flex-col lg:flex-row gap-[20px] lg:gap-[30px]">
+                    <div className="flex flex-col gap-[14px] w-full lg:w-auto">
+                        <div className="flex flex-row lg:flex-col w-full lg:w-[400px] h-auto lg:h-[120px] rounded-[12px] border-[1px] border-[#EDEDED] overflow-x-auto lg:overflow-x-visible">
                             <span
-                                className={`text-[#022B23] ${activeSection === 'general' ? 'bg-[#F8F8F8]' : ''} rounded-tr-[12px] rounded-tl-[12px] text-[12px] py-[10px] px-[8px] h-[40px] cursor-pointer`}
+                                className={`text-[#022B23] ${activeSection === 'general' ? 'bg-[#F8F8F8]' : ''} flex-shrink-0 lg:flex-shrink lg:rounded-tr-[12px] lg:rounded-tl-[12px] text-[12px] py-[10px] px-[8px] h-[40px] cursor-pointer whitespace-nowrap flex items-center`}
                                 onClick={() => handleNavClick('general')}
                             >
                                 General settings
                             </span>
                             <span
-                                className={`text-[#022B23] ${activeSection === 'security' ? 'bg-[#F8F8F8]' : ''} text-[12px] py-[10px] px-[8px] h-[40px] cursor-pointer`}
+                                className={`text-[#022B23] ${activeSection === 'security' ? 'bg-[#F8F8F8]' : ''} flex-shrink-0 lg:flex-shrink text-[12px] py-[10px] px-[8px] h-[40px] cursor-pointer whitespace-nowrap flex items-center`}
                                 onClick={() => handleNavClick('security')}
                             >
                                 Security
                             </span>
                             <span
-                                className={`text-[#022B23] ${activeSection === 'notifications' ? 'bg-[#F8F8F8]' : ''} rounded-br-[12px] rounded-bl-[12px] text-[12px] py-[10px] px-[8px] h-[40px] cursor-pointer`}
+                                className={`text-[#022B23] ${activeSection === 'notifications' ? 'bg-[#F8F8F8]' : ''} flex-shrink-0 lg:flex-shrink lg:rounded-br-[12px] lg:rounded-bl-[12px] text-[12px] py-[10px] px-[8px] h-[40px] cursor-pointer whitespace-nowrap flex items-center`}
                                 onClick={() => handleNavClick('notifications')}
                             >
                                 Notifications
                             </span>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[24px] mb-10 w-[820px]">
+                    <div className="flex flex-col gap-[24px] mb-10 w-full lg:w-[820px]">
                         <div
                             ref={generalSettingsRef}
                             id="general-settings"
@@ -851,42 +851,44 @@ const Profile = () => {
                                 <p className="text-[#101828] text-[18px] font-medium">General settings</p>
                                 <p className="text-[#667085] text-[14px]">View and manage all your settings</p>
                             </div>
-                            <div className="flex justify-between items-center h-[77px] w-full px-[37px] py-[14px] leading-tight">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center min-h-[77px] w-full px-[20px] sm:px-[37px] py-[14px] leading-tight gap-[16px] sm:gap-0">
                                 <div className="flex flex-col">
                                     <p className="text-[#6A6C6E] text-[14px] ">Full Name</p>
-                                    <p className="text-[#141415] text-[16px] font-medium">{userProfile.firstName} {userProfile.lastName}</p>
+                                    <p className="text-[#141415] text-[16px] font-medium break-words">{userProfile.firstName} {userProfile.lastName}</p>
                                 </div>
-                                <ProfilePicture 
-                                    imageUrl={userProfile.imageUrl} 
-                                    onUpload={handleProfilePictureUpload}
-                                    isUploading={isUploadingPhoto}
-                                />
+                                <div className="flex justify-center sm:justify-end">
+                                    <ProfilePicture 
+                                        imageUrl={userProfile.imageUrl} 
+                                        onUpload={handleProfilePictureUpload}
+                                        isUploading={isUploadingPhoto}
+                                    />
+                                </div>
                             </div>
-                            <div className="flex justify-between items-center h-[77px] w-full px-[37px] py-[14px] leading-tight">
-                                <div className="flex flex-col">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center min-h-[77px] w-full px-[20px] sm:px-[37px] py-[14px] leading-tight gap-[16px] sm:gap-0">
+                                <div className="flex flex-col flex-1 min-w-0">
                                     <p className="text-[#6A6C6E] text-[14px] ">Address</p>
-                                    <p className="text-[#141415] text-[16px] font-medium">
+                                    <p className="text-[#141415] text-[16px] font-medium break-words">
                                         {isLoadingAddress ? "Loading..." :
                                             userAddress ? `${userAddress.address}, ${userAddress.lga}, ${userAddress.state}` : "No address provided"}
                                     </p>
                                 </div>
                                 <div
-                                    className="flex cursor-pointer hover:shadow-sm justify-center text-[#023047] text-[14px] items-center rounded-[8px] w-[100px] h-[40px] border-[1px] border-[#D0D5DD]"
+                                    className="flex cursor-pointer hover:shadow-sm justify-center text-[#023047] text-[14px] items-center rounded-[8px] w-full sm:w-[100px] h-[40px] border-[1px] border-[#D0D5DD] flex-shrink-0"
                                     onClick={() => setIsAddressModalOpen(true)}
                                 >
                                     {userAddress ? "Edit" : "Add Address"}
                                 </div>
                             </div>
-                            <div className="flex flex-col h-[77px] w-full px-[37px] py-[14px] leading-tight">
+                            <div className="flex flex-col min-h-[77px] w-full px-[20px] sm:px-[37px] py-[14px] leading-tight">
                                 <p className="text-[#6A6C6E] text-[14px] ">LGA</p>
-                                <p className="text-[#141415] text-[16px] font-medium">
+                                <p className="text-[#141415] text-[16px] font-medium break-words">
                                     {isLoadingAddress ? "Loading..." :
                                         userAddress ? `${userAddress.lga}` : "No address"}
                                 </p>
                             </div>
-                            <div className="flex flex-col h-[77px] w-full px-[37px] py-[14px] leading-tight">
+                            <div className="flex flex-col min-h-[77px] w-full px-[20px] sm:px-[37px] py-[14px] leading-tight">
                                 <p className="text-[#6A6C6E] text-[14px] ">State</p>
-                                <p className="text-[#141415] text-[16px] font-medium">
+                                <p className="text-[#141415] text-[16px] font-medium break-words">
                                     {isLoadingAddress ? "Loading..." :
                                         userAddress ? `${userAddress.state}` : "No address"}
                                 </p>
