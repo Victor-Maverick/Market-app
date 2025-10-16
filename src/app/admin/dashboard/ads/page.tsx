@@ -15,6 +15,10 @@ interface Tier {
     shopsPromoted: number;
     benefits: string[];
     updateTime: string;
+    validity: number;
+    featuredNumber: number;
+    promotedNumber: number;
+    floatedNumber: number;
 }
 
 interface TransactionDetails {
@@ -633,7 +637,7 @@ const Ads = () => {
                         {tiers.map((tier, index) => (
                             <div
                                 key={tier.id}
-                                className="flex flex-col rounded-[12px] sm:rounded-[14px] h-[70px] sm:h-[86px] border-[#EAEAEA] border-[0.5px]"
+                                className="flex flex-col rounded-[12px] sm:rounded-[14px] h-[80px] sm:h-[100px] border-[#EAEAEA] border-[0.5px]"
                             >
                                 <div
                                     className="w-full px-[10px] sm:px-[14px] flex items-center rounded-tl-[12px] rounded-tr-[12px] sm:rounded-tl-[14px] sm:rounded-tr-[14px] h-[28px] sm:h-[34px]"
@@ -641,14 +645,17 @@ const Ads = () => {
                                 >
                                     <p className="text-[#022B23] text-[10px] sm:text-[12px] font-medium truncate">{tier.tier}</p>
                                 </div>
-                                <div className="flex-1 flex items-center justify-between p-[10px] sm:p-[14px]">
-                                    <p className="text-[16px] sm:text-[20px] text-[#022B23] font-medium truncate">{formatCurrency(tier.price)}</p>
-                                    <p
-                                        className="underline text-[10px] sm:text-[12px] text-[#022B23] font-medium cursor-pointer hover:text-[#033a30] transition-colors"
-                                        onClick={() => setSelectedTier(tier)}
-                                    >
-                                        Edit tier
-                                    </p>
+                                <div className="flex-1 flex flex-col justify-center p-[10px] sm:p-[14px]">
+                                    <div className="flex items-center justify-between mb-1">
+                                        <p className="text-[16px] sm:text-[20px] text-[#022B23] font-medium truncate">{formatCurrency(tier.price)}</p>
+                                        <p
+                                            className="underline text-[10px] sm:text-[12px] text-[#022B23] font-medium cursor-pointer hover:text-[#033a30] transition-colors"
+                                            onClick={() => setSelectedTier(tier)}
+                                        >
+                                            Edit tier
+                                        </p>
+                                    </div>
+                                    <p className="text-[8px] sm:text-[10px] text-[#667085]">Validity: {tier.validity || 30} days</p>
                                 </div>
                             </div>
                         ))}

@@ -74,6 +74,7 @@ const TierEditModal = ({ tier, onClose }: TierEditModalProps) => {
         featuredNumber: 0,
         promotedNumber: 0,
         floatedNumber: 0,
+        validity: 30, // Default to 30 days
     });
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -90,6 +91,7 @@ const TierEditModal = ({ tier, onClose }: TierEditModalProps) => {
                     featuredNumber: tierData.featuredNumber || 0,
                     promotedNumber: tierData.promotedNumber || 0,
                     floatedNumber: tierData.floatedNumber || 0,
+                    validity: tierData.validity || 30,
                 });
             } catch (error) {
                 console.error('Error fetching tier data:', error);
@@ -119,6 +121,7 @@ const TierEditModal = ({ tier, onClose }: TierEditModalProps) => {
                     featuredNumber: formData.featuredNumber,
                     promotedNumber: formData.promotedNumber,
                     floatedNumber: formData.floatedNumber,
+                    validity: formData.validity,
                 }
             );
 
@@ -190,6 +193,16 @@ const TierEditModal = ({ tier, onClose }: TierEditModalProps) => {
                             value={formData.floatedNumber}
                             onChange={handleChange("floatedNumber")}
                             placeholder="Number of floated products allowed"
+                            type="number"
+                        />
+                    </div>
+                    <div className="w-full">
+                        <InputField
+                            id="validity"
+                            label="Validity (Days)"
+                            value={formData.validity}
+                            onChange={handleChange("validity")}
+                            placeholder="Number of days the promotion is valid"
                             type="number"
                         />
                     </div>

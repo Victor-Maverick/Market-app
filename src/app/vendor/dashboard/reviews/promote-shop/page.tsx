@@ -26,6 +26,7 @@ interface ApiTier {
     featuredNumber: number;
     promotedNumber: number;
     floatedNumber: number;
+    validity: number;
     updateTime: string;
 }
 
@@ -445,18 +446,22 @@ const PromoteShop = () => {
                                             </p>
                                         </div>
                                         <div className="flex flex-col gap-[10px] sm:gap-[14px]">
-                                            <div className="flex items-center gap-[4px] text-[11px] sm:text-[12px] text-[#1E1E1E] font-medium">
-                                                <Image src={greenTick} alt="Green tick icon" width={12} height={12} className="sm:w-[14px] sm:h-[14px]"/>
-                                                <p>Featured: {tier.featuredNumber} products</p>
-                                            </div>
-                                            <div className="flex items-center gap-[4px] text-[11px] sm:text-[12px] text-[#1E1E1E] font-medium">
-                                                <Image src={greenTick} alt="Green tick icon" width={12} height={12} className="sm:w-[14px] sm:h-[14px]"/>
-                                                <p>Promoted: {tier.promotedNumber} products</p>
-                                            </div>
-                                            {tier.tier !== 'BASIC' && (
+                                            {tier.featuredNumber > 0 && (
                                                 <div className="flex items-center gap-[4px] text-[11px] sm:text-[12px] text-[#1E1E1E] font-medium">
                                                     <Image src={greenTick} alt="Green tick icon" width={12} height={12} className="sm:w-[14px] sm:h-[14px]"/>
-                                                    <p>Floated: {tier.floatedNumber} products</p>
+                                                    <p>Featured: {tier.featuredNumber} products ({tier.validity} days)</p>
+                                                </div>
+                                            )}
+                                            {tier.promotedNumber > 0 && (
+                                                <div className="flex items-center gap-[4px] text-[11px] sm:text-[12px] text-[#1E1E1E] font-medium">
+                                                    <Image src={greenTick} alt="Green tick icon" width={12} height={12} className="sm:w-[14px] sm:h-[14px]"/>
+                                                    <p>Promoted: {tier.promotedNumber} products ({tier.validity} days)</p>
+                                                </div>
+                                            )}
+                                            {tier.floatedNumber > 0 && (
+                                                <div className="flex items-center gap-[4px] text-[11px] sm:text-[12px] text-[#1E1E1E] font-medium">
+                                                    <Image src={greenTick} alt="Green tick icon" width={12} height={12} className="sm:w-[14px] sm:h-[14px]"/>
+                                                    <p>Floated: {tier.floatedNumber} products ({tier.validity} days)</p>
                                                 </div>
                                             )}
                                         </div>

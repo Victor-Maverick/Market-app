@@ -44,6 +44,7 @@ interface TierResponse {
     featuredNumber: number;
     promotedNumber: number;
     floatedNumber: number;
+    validity: number;
 }
 
 const ProductTableRow = ({
@@ -452,6 +453,22 @@ const ReviewTab = () => {
                                         <p>Featured: {shopData.featuredNumber}/{tierData.featuredNumber}</p>
                                         <p>Promoted: {shopData.promotedNumber}/{tierData.promotedNumber}</p>
                                         <p>Floated: {shopData.floatedNumber}/{tierData.floatedNumber}</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col pt-[18px] px-[10px] pb-[10px] gap-[14px] w-full sm:w-[50%] lg:w-[25%] h-[100px] rounded-[14px] border-[0.5px] border-[#E4E4E7]">
+                                    <div className="flex items-center gap-[8px]">
+                                        <p className="text-[12px] text-[#71717A] font-medium">Validity</p>
+                                    </div>
+                                    <div className="flex flex-col gap-[4px] mt-[8px]">
+                                        {tierData.featuredNumber > 0 && (
+                                            <p className="text-[10px] text-[#71717A]">Featured: {tierData.validity} days</p>
+                                        )}
+                                        {tierData.promotedNumber > 0 && (
+                                            <p className="text-[10px] text-[#71717A]">Promoted: {tierData.validity} days</p>
+                                        )}
+                                        {tierData.floatedNumber > 0 && (
+                                            <p className="text-[10px] text-[#71717A]">Floated: {tierData.validity} days</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
